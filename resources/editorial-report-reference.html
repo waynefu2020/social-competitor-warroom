@@ -1,0 +1,784 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>录音卡小红书社媒竞品调研报告 · NovaCard</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@500;700;900&family=Noto+Sans+SC:wght@400;500;700&family=Instrument+Serif:ital@0;1&family=JetBrains+Mono:wght@500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --paper:#F4F1EA; --paper-2:#ECE7DC; --card:#FBF9F4; --ink:#16140F; --ink-2:#4A463D; --ink-3:#8A8477;
+  --line:rgba(22,20,15,.12); --accent:#C2410C; --accent-soft:#F6E1D3; --olive:#4D5B2F; --olive-soft:#E3E6D3;
+  --serif:"Noto Serif SC","Songti SC","STSong",serif; --sans:"Noto Sans SC","PingFang SC","Hiragino Sans GB","Microsoft YaHei",sans-serif;
+  --latin:"Instrument Serif",Georgia,serif; --mono:"JetBrains Mono",ui-monospace,monospace;
+  --r:20px;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{background:var(--paper);color:var(--ink);font-family:var(--sans);font-size:15px;line-height:1.75;-webkit-font-smoothing:antialiased}
+a{color:inherit}
+.wrap{max-width:1240px;margin:0 auto;padding:0 32px}
+
+/* progress + nav */
+#progress{position:fixed;top:0;left:0;height:3px;background:var(--accent);width:0;z-index:100}
+nav.top{position:sticky;top:0;z-index:50;background:rgba(244,241,234,.86);backdrop-filter:blur(12px);border-bottom:1px solid var(--line)}
+nav.top .wrap{display:flex;align-items:center;justify-content:space-between;height:56px;gap:24px}
+.brand{font-family:var(--mono);font-size:12px;letter-spacing:.08em;text-transform:uppercase;white-space:nowrap}
+.brand b{color:var(--accent)}
+nav.top ul{display:flex;gap:4px;list-style:none;overflow-x:auto}
+nav.top a{display:block;text-decoration:none;font-size:13px;color:var(--ink-2);padding:6px 12px;border-radius:999px;white-space:nowrap;transition:.2s}
+nav.top a:hover,nav.top a.on{background:var(--ink);color:var(--paper)}
+
+/* hero */
+.hero{padding:72px 0 48px;border-bottom:1px solid var(--line)}
+.meta-row{display:flex;justify-content:space-between;font-family:var(--mono);font-size:12px;color:var(--ink-3);letter-spacing:.06em;text-transform:uppercase;border-bottom:1px solid var(--ink);padding-bottom:12px;margin-bottom:48px}
+.hero h1{font-family:var(--serif);font-weight:900;font-size:clamp(40px,6.4vw,88px);line-height:1.08;letter-spacing:-.02em}
+.hero h1 em{font-style:normal;color:var(--accent)}
+.hero .sub{display:grid;grid-template-columns:1.3fr 1fr;gap:48px;margin-top:40px;align-items:end}
+.hero .thesis{font-family:var(--serif);font-size:clamp(20px,2.2vw,28px);line-height:1.6;font-weight:500}
+.hero .thesis mark{background:linear-gradient(transparent 62%,var(--accent-soft) 62%);color:inherit;font-weight:700}
+.hero .toc{border-left:1px solid var(--line);padding-left:24px;font-size:14px;color:var(--ink-2)}
+.hero .toc li{list-style:none;display:flex;gap:12px;padding:6px 0;border-bottom:1px dashed var(--line)}
+.hero .toc li span{font-family:var(--mono);color:var(--accent);font-size:12px;padding-top:3px}
+.hero .toc a{text-decoration:none}
+.hero .toc a:hover{color:var(--accent)}
+
+/* stats strip */
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:56px}
+.stat{background:var(--card);border:1px solid var(--line);border-radius:var(--r);padding:22px 22px 18px}
+.stat .n{font-family:var(--latin);font-size:52px;line-height:1;letter-spacing:-.02em}
+.stat .n small{font-family:var(--sans);font-size:15px;margin-left:2px;color:var(--ink-2)}
+.stat .l{font-size:13px;color:var(--ink-2);margin-top:10px;line-height:1.5}
+.stat.dark{background:var(--ink);color:var(--paper);border-color:var(--ink)}
+.stat.dark .l,.stat.dark small{color:#BDB6A6!important}
+.stat.acc{background:var(--accent);color:#fff;border-color:var(--accent)}
+.stat.acc .l,.stat.acc small{color:#FBD9C6!important}
+
+/* section */
+section.sec{padding:96px 0 32px}
+.sec-head{display:grid;grid-template-columns:120px 1fr;gap:24px;margin-bottom:48px;align-items:start}
+.sec-no{font-family:var(--latin);font-size:72px;line-height:.9;color:var(--accent)}
+.kicker{font-family:var(--mono);font-size:12px;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-3)}
+.sec-head h2{font-family:var(--serif);font-weight:900;font-size:clamp(30px,3.6vw,46px);line-height:1.2;margin:6px 0 12px}
+.sec-head p{color:var(--ink-2);max-width:760px}
+
+/* pull quote */
+.pull{font-family:var(--serif);font-size:clamp(22px,2.6vw,34px);line-height:1.5;font-weight:700;padding:40px 0 40px 40px;border-left:4px solid var(--accent);margin:0 0 48px;max-width:1000px}
+.pull .q{font-family:var(--latin);color:var(--accent);font-size:1.6em;line-height:0;vertical-align:-.3em;margin-right:4px}
+.pull small{display:block;font-family:var(--sans);font-size:16px;font-weight:400;color:var(--ink-2);margin-top:14px;line-height:1.7}
+
+/* pillars */
+.pillars{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+.pillar{display:flex;flex-direction:column;gap:12px;padding:32px;min-height:340px}
+.pillar .pn{font-family:var(--latin);font-size:64px;line-height:1;color:var(--accent)}
+.pillar h3{font-family:var(--serif);font-size:26px;line-height:1.35}
+.pillar .lead{font-family:var(--serif);font-size:18px;font-weight:700;color:var(--ink)}
+.pillar p{font-size:14px;color:var(--ink-2)}
+.pillar .hits{margin-top:auto;font-size:13px;border-top:1px solid var(--line);padding-top:14px;color:var(--ink-2)}
+.pillar .hits span{font-family:var(--mono);font-size:10.5px;letter-spacing:.1em;color:var(--accent);margin-right:8px}
+.pillar.p1{background:var(--ink);color:var(--paper);border-color:var(--ink)}
+.pillar.p1 h3,.pillar.p1 .lead{color:#fff}
+.pillar.p1 p,.pillar.p1 .hits{color:#CFC8B8;border-color:rgba(255,255,255,.15)}
+.pillar.p1 .pn,.pillar.p1 .hits span{color:#FF8A4C}
+.pillar-note{margin-top:16px;font-size:13px;color:var(--ink-3)}
+.pillar-note a{color:var(--accent)}
+@media (max-width:1000px){.pillars{grid-template-columns:1fr}}
+/* battle cards */
+.bento{display:grid;grid-template-columns:repeat(12,1fr);gap:16px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:var(--r);padding:28px;position:relative;overflow:hidden}
+.battle{grid-column:span 6;display:flex;flex-direction:column;gap:14px}
+.battle .tag{display:inline-flex;align-items:center;gap:8px;font-size:12px;font-family:var(--mono);letter-spacing:.04em;color:var(--ink-3)}
+.battle .tag i{width:8px;height:8px;border-radius:50%;background:var(--accent);display:inline-block}
+.battle h3{font-family:var(--serif);font-size:24px;line-height:1.35}
+.battle h3 small{display:block;font-family:var(--sans);font-size:13px;font-weight:400;color:var(--ink-3);margin-top:4px}
+.battle .angle{display:inline-block;background:var(--ink);color:var(--paper);font-size:12px;padding:3px 10px;border-radius:999px;width:fit-content}
+.battle blockquote{font-family:var(--serif);font-size:17px;line-height:1.7;color:var(--ink);border-top:1px solid var(--line);padding-top:14px}
+.battle p.sub{font-size:14px;color:var(--ink-2)}
+.battle p.sub b{color:var(--accent)}
+.battle .idx{position:absolute;right:20px;top:8px;font-family:var(--latin);font-size:96px;color:rgba(22,20,15,.05);line-height:1}
+
+/* plays */
+.plays{border-top:2px solid var(--ink)}
+.play{display:grid;grid-template-columns:72px 1.1fr 1.2fr 1.5fr;gap:28px;padding:32px 0;border-bottom:1px solid var(--line)}
+.play .no{font-family:var(--latin);font-size:44px;line-height:1;color:var(--accent)}
+.play h3{font-family:var(--serif);font-size:20px;line-height:1.45}
+.play .lbl{font-family:var(--mono);font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-3);margin-bottom:8px;display:block}
+.play .data{font-size:14px;color:var(--ink-2)}
+.play .data .big{font-family:var(--latin);font-size:40px;color:var(--ink);line-height:1;display:block;margin-bottom:6px}
+.play .data .big small{font-family:var(--sans);font-size:13px;color:var(--ink-3)}
+.play .todo{background:var(--olive-soft);border-radius:14px;padding:18px 20px;font-size:14px}
+.play .todo li{margin-left:18px;margin-bottom:6px}
+.play .todo b{color:var(--olive)}
+code{font-family:var(--mono);font-size:.88em;background:var(--paper-2);padding:1px 6px;border-radius:6px}
+
+/* price chart */
+.chart-card{grid-column:span 8}
+.chart-note{grid-column:span 4;background:var(--ink);color:var(--paper)}
+.chart-note h4{font-family:var(--serif);font-size:22px;line-height:1.4;margin-bottom:16px}
+.chart-note p{color:#CFC8B8;font-size:14px;margin-bottom:12px}
+.chart-note .hl{font-family:var(--latin);font-size:64px;color:#FF8A4C;line-height:1}
+.bars{display:flex;flex-direction:column;gap:10px;margin-top:20px}
+.bar{display:grid;grid-template-columns:150px 1fr 150px;align-items:center;gap:14px;font-size:13px}
+.bar .name{color:var(--ink-2);text-align:right}
+.bar .track{height:26px;background:var(--paper-2);border-radius:8px;position:relative;overflow:hidden}
+.bar .fill{height:100%;background:#B9B2A3;border-radius:8px;width:0;transition:width 1.1s cubic-bezier(.2,.8,.2,1)}
+.bar.us .fill{background:var(--accent)}
+.bar.us .name{color:var(--accent);font-weight:700}
+.bar .val{font-family:var(--mono);font-size:12px;color:var(--ink)}
+.bar .val em{font-style:normal;color:var(--accent);display:block;font-size:11px}
+/* TCO */
+.tco{grid-column:span 12;padding:36px}
+.tco-head{display:flex;justify-content:space-between;align-items:flex-end;gap:24px;flex-wrap:wrap;margin-bottom:24px}
+.tco-head h3{font-family:var(--serif);font-size:28px;line-height:1.3;margin-top:6px}
+.tco-head p{font-size:13px;color:var(--ink-3);max-width:420px}
+.tco table{width:100%;border-collapse:collapse;font-size:14px}
+.tco th{font-family:var(--mono);font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-3);text-align:left;font-weight:500;padding:0 12px 12px;border-bottom:2px solid var(--ink)}
+.tco td{padding:16px 12px;border-bottom:1px solid var(--line);vertical-align:middle;color:var(--ink-2)}
+.tco td.p{font-family:var(--serif);font-weight:700;color:var(--ink);font-size:16px;white-space:nowrap}
+.tco td.p small{display:block;font-family:var(--sans);font-weight:400;font-size:12px;color:var(--ink-3)}
+.tco td.total{font-family:var(--latin);font-size:30px;color:var(--ink);white-space:nowrap;text-align:right}
+.tco tr.us td{background:var(--accent-soft)}
+.tco tr.us td.p,.tco tr.us td.total{color:var(--accent)}
+.tco .tbar{height:10px;background:var(--paper-2);border-radius:6px;position:relative;min-width:180px}
+.tco .tbar i{position:absolute;top:0;bottom:0;border-radius:6px;background:#B9B2A3}
+.tco tr.us .tbar i{background:var(--accent)}
+.tco .tbar i.range{background:#EFB08C!important;border-radius:0 6px 6px 0}
+.tco-foot{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:24px}
+.tco-foot div{border-radius:14px;padding:18px 20px;font-size:14px;line-height:1.7}
+.tco-foot .good{background:var(--olive-soft);color:#2E3719}
+.tco-foot .warn{background:var(--paper-2);color:var(--ink-2)}
+.tco-foot b{display:block;font-family:var(--serif);font-size:16px;color:var(--ink);margin-bottom:4px}
+.tco .note{font-size:12px;color:var(--ink-3);margin-top:16px;line-height:1.7}
+@media (max-width:1000px){.tco{overflow-x:auto}.tco table{min-width:820px}.tco-foot{grid-template-columns:1fr}}
+.legend{display:flex;gap:18px;font-size:12px;color:var(--ink-3);margin-top:8px}
+.legend i{display:inline-block;width:10px;height:10px;border-radius:3px;margin-right:6px;vertical-align:-1px}
+
+/* competitor cards */
+.landscape{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-bottom:40px}
+.landscape .card h4{font-family:var(--mono);font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-3);margin-bottom:10px}
+.landscape .card p{font-family:var(--serif);font-size:17px;line-height:1.6}
+.filters{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:20px}
+.filters button{font:inherit;font-size:13px;border:1px solid var(--line);background:var(--card);padding:6px 14px;border-radius:999px;cursor:pointer;color:var(--ink-2)}
+.filters button.on{background:var(--ink);color:var(--paper);border-color:var(--ink)}
+.comp-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+.comp{display:flex;flex-direction:column;gap:14px;transition:transform .25s,box-shadow .25s}
+.comp:hover{transform:translateY(-3px);box-shadow:0 18px 40px -24px rgba(22,20,15,.35)}
+.comp.us{background:var(--ink);color:var(--paper);grid-column:span 3;display:grid;grid-template-columns:1.1fr 1fr 1fr;gap:28px}
+.comp.us .muted{color:#BDB6A6}
+.comp .top{display:flex;justify-content:space-between;align-items:flex-start;gap:12px}
+.comp h3{font-family:var(--serif);font-size:21px;line-height:1.3}
+.comp .price{font-family:var(--latin);font-size:34px;line-height:1;white-space:nowrap;text-align:right}
+.comp .price small{display:block;font-family:var(--sans);font-size:11px;color:var(--ink-3);margin-top:4px;white-space:normal}
+.comp .who{font-size:13px;color:var(--ink-2)}
+.chips{display:flex;flex-wrap:wrap;gap:6px}
+.chip{font-size:12px;padding:2px 10px;border-radius:999px;background:var(--paper-2);color:var(--ink-2)}
+.comp.us .chip{background:rgba(255,255,255,.1);color:var(--paper)}
+.comp .attack{font-size:13.5px;background:var(--accent-soft);border-radius:12px;padding:12px 14px;color:#5A230A}
+.comp .attack b{display:block;font-family:var(--mono);font-size:10.5px;letter-spacing:.1em;color:var(--accent);margin-bottom:4px}
+.comp details{border-top:1px solid var(--line);padding-top:10px;font-size:13px;color:var(--ink-2)}
+.comp details summary{cursor:pointer;font-weight:500;color:var(--ink);list-style:none;display:flex;justify-content:space-between}
+.comp details summary::after{content:"+";font-family:var(--mono)}
+.comp details[open] summary::after{content:"−"}
+.comp details .row{margin-top:10px}
+.comp details .row b{display:block;font-family:var(--mono);font-size:10.5px;letter-spacing:.1em;color:var(--ink-3);text-transform:uppercase}
+.comp details a{color:var(--accent);text-underline-offset:3px}
+.comp .group{font-family:var(--mono);font-size:10.5px;letter-spacing:.08em;color:var(--ink-3);text-transform:uppercase}
+
+/* insight callout */
+.insight{background:var(--accent);color:#fff;border-radius:28px;padding:48px;display:grid;grid-template-columns:200px 1fr;gap:40px;margin-bottom:40px}
+.insight .k{font-family:var(--latin);font-size:96px;line-height:.9}
+.insight p{font-family:var(--serif);font-size:20px;line-height:1.75}
+.insight .pains{display:flex;flex-wrap:wrap;gap:8px;margin-top:20px}
+.insight .pains span{background:rgba(255,255,255,.16);border:1px solid rgba(255,255,255,.3);padding:5px 14px;border-radius:999px;font-family:var(--sans);font-size:13px}
+
+/* pain vs solution */
+.form-block{margin-bottom:56px}
+.form-title{display:flex;align-items:baseline;gap:16px;border-bottom:2px solid var(--ink);padding-bottom:12px;margin-bottom:20px}
+.form-title h3{font-family:var(--serif);font-size:28px}
+.form-title span{font-size:13px;color:var(--ink-3)}
+.pvs{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.pain-list li,.sol-list li{list-style:none;padding:16px 0;border-bottom:1px dashed var(--line);font-size:14px;color:var(--ink-2)}
+.pain-list li:last-child,.sol-list li:last-child{border-bottom:0}
+.pain-list li b,.sol-list li b{display:block;color:var(--ink);font-size:15.5px;margin-bottom:4px;font-family:var(--serif)}
+.pain-col h4,.sol-col h4{font-family:var(--mono);font-size:11px;letter-spacing:.1em;text-transform:uppercase;margin-bottom:6px}
+.pain-col h4{color:var(--accent)}
+.sol-col{background:var(--olive);color:#EEF0E4;border-color:var(--olive)}
+.sol-col h4{color:#C9D1A8}
+.sol-list li{color:#D6DBC4;border-color:rgba(255,255,255,.18)}
+.sol-list li b{color:#fff}
+.posts{margin-top:16px;display:grid;grid-template-columns:repeat(2,1fr);gap:12px}
+.post{display:flex;gap:14px;align-items:flex-start;background:var(--card);border:1px solid var(--line);border-radius:14px;padding:14px 16px;text-decoration:none;transition:.2s}
+.post:hover{border-color:var(--accent)}
+.post .av{flex:0 0 36px;height:36px;border-radius:50%;background:var(--paper-2);display:grid;place-items:center;font-family:var(--serif);font-weight:700;color:var(--accent)}
+.post .t{font-size:14px;font-weight:500;line-height:1.5}
+.post .m{font-size:12px;color:var(--ink-3);margin-top:2px}
+.post .m b{color:var(--accent);font-weight:500}
+
+/* evidence */
+.evi{grid-column:span 6}
+.evi .who{font-family:var(--mono);font-size:12px;color:var(--accent)}
+.evi h3{font-family:var(--serif);font-size:22px;line-height:1.45;margin:10px 0 12px}
+.evi h3 a{text-decoration:none}
+.evi h3 a:hover{text-decoration:underline;text-underline-offset:4px}
+.evi p{font-size:14px;color:var(--ink-2)}
+.puzzle{grid-column:span 12;background:var(--ink);color:var(--paper);display:grid;grid-template-columns:1fr 1fr;gap:40px;align-items:center;padding:48px}
+.puzzle h3{font-family:var(--serif);font-size:clamp(26px,3vw,38px);line-height:1.35}
+.puzzle h3 em{font-style:normal;color:#FF8A4C}
+.pieces{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+.piece{border:1px solid rgba(255,255,255,.18);border-radius:14px;padding:18px;text-align:center;font-size:13px;color:#CFC8B8}
+.piece b{display:block;font-family:var(--serif);font-size:18px;color:#fff;margin-bottom:4px}
+.piece.new{background:var(--accent);border-color:var(--accent);color:#FBD9C6}
+.action{grid-column:span 12;border:2px dashed var(--accent);background:transparent}
+.action h3{font-family:var(--serif);font-size:24px;margin-bottom:10px}
+.action p{color:var(--ink-2)}
+.action .targets{display:flex;flex-wrap:wrap;gap:8px;margin-top:16px}
+.action .targets a{font-size:13px;text-decoration:none;border:1px solid var(--line);background:var(--card);padding:6px 14px;border-radius:999px}
+.action .targets a:hover{border-color:var(--accent);color:var(--accent)}
+
+footer{margin-top:96px;border-top:1px solid var(--ink);padding:28px 0 48px;font-size:12px;color:var(--ink-3);font-family:var(--mono);display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap}
+
+/* reveal */
+.rv{opacity:0;transform:translateY(18px);transition:opacity .7s ease,transform .7s ease}
+.rv.in{opacity:1;transform:none}
+
+@media (max-width:1000px){
+  .hero .sub,.insight,.puzzle,.pvs{grid-template-columns:1fr}
+  .stats{grid-template-columns:repeat(2,1fr)}
+  .battle,.chart-card,.chart-note,.evi{grid-column:span 12}
+  .play{grid-template-columns:48px 1fr}
+  .play>div:nth-child(n+3){grid-column:2}
+  .comp-grid,.landscape{grid-template-columns:1fr 1fr}
+  .comp.us{grid-column:span 2;grid-template-columns:1fr}
+  .posts{grid-template-columns:1fr}
+  .sec-head{grid-template-columns:1fr}
+  nav.top ul{display:none}
+}
+@media (max-width:640px){
+  .wrap{padding:0 18px}
+  .comp-grid,.landscape{grid-template-columns:1fr}
+  .comp.us{grid-column:span 1}
+  .bar{grid-template-columns:90px 1fr 96px}
+  .insight{padding:32px}
+}
+@media print{
+  nav.top,#progress,.filters{display:none}
+  .rv{opacity:1;transform:none}
+  body{background:#fff}
+  details{display:block}
+}
+</style>
+</head>
+<body>
+<div id="progress"></div>
+
+<nav class="top">
+  <div class="wrap">
+    <div class="brand"><b>●</b> NovaCard · Competitive Report</div>
+    <ul>
+      <li><a href="#s0">核心卖点</a></li>
+      <li><a href="#s1">差异化点</a></li>
+      <li><a href="#s2">渠道打法</a></li>
+      <li><a href="#s3">价格格局</a></li>
+      <li><a href="#s4">竞品档案</a></li>
+      <li><a href="#s5">用户吐槽</a></li>
+      <li><a href="#s6">野生实证</a></li>
+    </ul>
+  </div>
+</nav>
+
+<!-- ============ HERO ============ -->
+<header class="hero">
+  <div class="wrap">
+    <div class="meta-row"><span>Social Research · 小红书</span><span>Vol.01 — 2026.11</span><span>Warroom Showcase</span></div>
+    <h1>录音卡小红书<br>社媒竞品调研报告<br><em>NovaCard 语令卡</em></h1>
+    <div class="sub">
+      <p class="thesis">上一代录音卡，要么只管把声音转文字，要么把你的私人人脉全锁进老板的钉钉飞书里；而 NovaCard 是<mark>唯一拥有个人长期记忆、能直接调用 Agent 替你干活的个人语令卡</mark>。</p>
+      <ol class="toc">
+        <li><span>★</span><a href="#s0">核心卖点 · 三张王牌</a></li>
+        <li><span>01</span><a href="#s1">差异化点 · 四大派别进攻话术</a></li>
+        <li><span>02</span><a href="#s2">小红书社媒渠道打法</a></li>
+        <li><span>03</span><a href="#s3">价格与订阅格局</a></li>
+        <li><span>04</span><a href="#s4">10 款竞品档案</a></li>
+        <li><span>05</span><a href="#s5">真实用户吐槽分析</a></li>
+        <li><span>06</span><a href="#s6">野生自来水实证</a></li>
+      </ol>
+    </div>
+    <div class="stats">
+      <div class="stat acc rv"><div class="n">¥699</div><div class="l">NovaCard 首发价 · 送 3 个月 Max，会员期内无限转写</div></div>
+      <div class="stat dark rv"><div class="n">100<small>万+</small></div><div class="l">星闪笔记全球个人用户生态</div></div>
+      <div class="stat rv"><div class="n">10</div><div class="l">款被调研竞品 · 录音卡 / 手环 / 穿戴豆</div></div>
+    </div>
+  </div>
+</header>
+
+<main class="wrap">
+
+<!-- ============ PILLARS ============ -->
+<section class="sec" id="s0" style="padding-top:72px">
+  <div class="sec-head rv">
+    <div class="sec-no">★</div>
+    <div>
+      <div class="kicker">Core Pillars · 核心卖点</div>
+      <h2>NovaCard 的三张王牌</h2>
+      <p>后面所有进攻话术和渠道打法，都从这三点展开。</p>
+    </div>
+  </div>
+  <div class="pillars">
+    <article class="card pillar p1 rv">
+      <div class="pn">01</div>
+      <h3>可控的长期记忆</h3>
+      <p class="lead">Agent 谁都能接，记忆接不了。</p>
+      <p>这是唯一能拉开代际差的卖点，也是「有 Agent，没记性」的根基。而且是能改、能删的记忆。</p>
+      <div class="hits"><span>击穿</span>得到 删不掉错误标签 · 极米 只记两天 · Plaud 碎片无法串联</div>
+    </article>
+    <article class="card pillar p2 rv">
+      <div class="pn">02</div>
+      <h3>百万用户的成熟软件底盘</h3>
+      <p class="lead">先有成熟软件，再做硬件。</p>
+      <p>用户骂得最狠的是「半成品软件卖高价硬件」。星闪笔记老用户买卡第一天，历史记录就是它的记忆，竞品都得从零开始。</p>
+      <div class="hits"><span>证据</span>野生用户已自发用「竞品硬件 + 星闪笔记」组 CP</div>
+    </article>
+    <article class="card pillar p3 rv">
+      <div class="pn">03</div>
+      <h3>100% 个人私产，不绑公司</h3>
+      <p class="lead">你的记忆，不归老板。</p>
+      <p>直接击穿钉钉 / 千问 / 飞书的办公生态护城河，也正好对上超级个体、一人公司、创作者最在乎的「我的东西归我」。</p>
+      <div class="hits"><span>击穿</span>钉钉 A1 · 千问 A2 · 安克飞书豆</div>
+    </article>
+  </div>
+  <p class="pillar-note">价格（会员期内无限转写）作为战术武器，只在对 Plaud / TicNote 时使用。它容易被复制，而且讯飞基础转写免费，见 <a href="#s3">03 价格格局</a>。</p>
+</section>
+
+<!-- ============ 01 ============ -->
+<section class="sec" id="s1">
+  <div class="sec-head rv">
+    <div class="sec-no">01</div>
+    <div>
+      <div class="kicker">Key Conclusion · Differentiation</div>
+      <h2>差异化点：对四大派别逐个击破</h2>
+      <p>市场上的录音硬件可以归为四派。每一派都有自己的软肋，NovaCard 针对每一派准备了一句进攻话术。</p>
+    </div>
+  </div>
+
+  <div class="pull rv"><span class="q">“</span>上一代录音卡，有 Agent，没记性。<small>NovaCard 带着你的长期记忆干活：记得你说过什么、在意什么，干出来的才是你要的。</small></div>
+
+  <div class="bento">
+    <article class="card battle rv">
+      <span class="idx">A</span>
+      <span class="tag"><i></i>钉钉 A1 / 安克飞书豆</span>
+      <h3>企业办公绑定派</h3>
+      <span class="angle">数据私产 · 去班味</span>
+      <p class="sub">钉钉 / 飞书班味太浓；NovaCard 里的长期记忆 <b>100% 归你个人私产</b>，跳槽、创业随时带走。</p>
+      <blockquote>“钉钉飞书的记录归公司，离职带不走；NovaCard 是 100% 属于你个人的无班味外脑私产。”</blockquote>
+    </article>
+    <article class="card battle rv">
+      <span class="idx">B</span>
+      <span class="tag"><i></i>Plaud / TicNote</span>
+      <h3>高价硬件 + 天价年费派</h3>
+      <span class="angle">总拥有成本 · 原生 Agent</span>
+      <p class="sub">别花 1189 元买张硬件卡，3 个月后还要每年交 1099 元订阅费（免费版每月 300 分钟只够开 3 场会）！NovaCard 首发 699 元，<b>会员期内无限转写 0 焦虑</b>，一年省出一台新卡。</p>
+      <blockquote>“接个 Workbuddy 谁都会，可外接的 Agent 不认识你。NovaCard 背后是全球 100 万用户的『星闪笔记』，Agent 带着你的长期记忆干活。”</blockquote>
+    </article>
+    <article class="card battle rv">
+      <span class="idx">C</span>
+      <span class="tag"><i></i>得到 GetSeed 等</span>
+      <h3>半成品软件 &amp; 静态读书派</h3>
+      <span class="angle">软件底盘 · 真干活</span>
+      <p class="sub">买 AI 硬件本质是买它背后的软件！别拿连搜索、批量删除都没有的“半成品 App”折磨自己 —— 星闪笔记 <b>5 秒碎碎念自动起标题</b>，长会议自动总结，还有 Agent 能力。</p>
+      <blockquote>“只转文字那叫传统录音笔，只摘金句夸你那叫情绪价值。真正的 AI 是听懂你的话，结合你过去半年的记忆，直接调用 Agent 把方案和推文给你写出来！”</blockquote>
+    </article>
+    <article class="card battle rv">
+      <span class="idx">D</span>
+      <span class="tag"><i></i>极米记得手环</span>
+      <h3>全天候录音手环 &amp; 删原音派</h3>
+      <span class="angle">一按即录 · 保留原声</span>
+      <p class="sub">全天候不关机，一天生成 5 屏裹脚布日记，连刷抖音和日常废话都混进记忆库；而且戴手腕根本没法贴手机背面录微信电话！</p>
+      <blockquote>“友商为了省云空间搞‘物理删原音’，AI 听错价格或人名你连回听核对的机会都没有！NovaCard 一按即录、松手即停，100% 保留加密原声。”</blockquote>
+    </article>
+  </div>
+</section>
+
+<!-- ============ 02 ============ -->
+<section class="sec" id="s2">
+  <div class="sec-head rv">
+    <div class="sec-no">02</div>
+    <div>
+      <div class="kicker">Channel Playbook · Xiaohongshu</div>
+      <h2>小红书社媒渠道打法</h2>
+      <p>从竞品的真实投放数据里拆出 5 套已经被验证有效的打法，每套都配了 NovaCard 可以落地的策略。</p>
+    </div>
+  </div>
+
+  <div class="plays">
+    <div class="play rv">
+      <div class="no">01</div>
+      <div><span class="lbl">打法</span><h3>避开职场会议场景，抢占高溢价细分人群</h3><p class="data" style="margin-top:8px">ADHD / 一人公司 / 人生规划黑匣子</p></div>
+      <div class="data"><span class="lbl">数据支撑</span><span class="big">55<small> 单 Plaud 商单</small></span>除常规数码测评外，互动转化最高、最破圈的反而是 ADHD 大脑外挂、一人公司工作流、给人生建“黑匣子”做规划。</div>
+      <div class="todo"><span class="lbl">我们的策略</span><ul>
+        <li>职场会议赛道（钉钉 / 飞书 / 讯飞）已成红海，且打工人不愿自掏腰包为公司买工具。</li>
+        <li>星闪笔记原本就有极强的创作者、超级个体与 ADHD 基因。</li>
+        <li>重点投 <b>一人公司 / 内容创作者</b>、<b>ADHD 碎片灵感急救</b>、<b>个人数字黑匣子</b>。</li>
+      </ul></div>
+    </div>
+    <div class="play rv">
+      <div class="no">02</div>
+      <div><span class="lbl">打法</span><h3>头部博主爆款造词 + 切片投流 + 腰部博主带词根截流</h3></div>
+      <div class="data"><span class="lbl">数据支撑</span><span class="big">13.7万<small> 赞 · papi酱</small></span>安克用一条反差喜剧建立「邪修开会 / 外置大脑」心智，随后拆 15~30s 切片投流，并密集投放 28 单腰部职场 / 科技博主（如 <code>@野生木兰</code>），全员带统一搜索词根。</div>
+      <div class="todo"><span class="lbl">我们的策略</span><ul>
+        <li>造专属品类词 <b>「语令卡」</b>，建立“上一代录音卡，有 Agent，没记性”的代际差。</li>
+        <li>集中预算打透 12 个头部科技 / 效率大 V 产出万赞标杆贴，再用 20~30 个腰部博主集中带 <code>#星闪笔记语令卡</code> <code>#novacard</code> 承接搜索。</li>
+      </ul></div>
+    </div>
+    <div class="play rv">
+      <div class="no">03</div>
+      <div><span class="lbl">打法</span><h3>用「第二大脑 + 个人记忆私产」激活百万存量私域</h3></div>
+      <div class="data"><span class="lbl">数据支撑</span><span class="big">5<small> 单报备 · 卖出数万台</small></span>得到几乎不投蒲公英，靠罗振宇 / 脱不花 / 快刀青衣视频号实操演示 + App 私域，卖出数万台 ¥888~1188 硬件；随礼盒附赠小麦种子建立“让灵感发芽”的仪式感。</div>
+      <div class="todo"><span class="lbl">我们的策略</span><ul>
+        <li>我们拥有全球 100 万+ 用户生态，已有野生用户自发用“竞品录音卡 + 星闪笔记”组 CP。</li>
+        <li>首发期在 App 内推 <b>「老用户专属软硬一体升级礼盒」</b>，发动种子用户晒体验。</li>
+        <li>比得到的“静态发芽”更进一步：<b>100% 个人记忆私产 + 直接调用原生 Agent 替你干活</b>。</li>
+      </ul></div>
+    </div>
+    <div class="play rv">
+      <div class="no">04</div>
+      <div><span class="lbl">打法</span><h3>用会员无限转写打爆订阅制焦虑</h3></div>
+      <div class="data"><span class="lbl">数据支撑</span><span class="big">673<small> 赞 / 159 评 · @moyosup</small></span>横评帖下用户犹豫的第 1 大原因：“买卡花一千，每年还要交上千块转写费（Plaud ¥1099/年、TicNote ¥1078/年）”。讯飞正是靠这招精准狙击 Plaud。</div>
+      <div class="todo"><span class="lbl">我们的策略</span><ul>
+        <li>首发 ¥699 送 3 个月 Max，会员期内 <b>无限转写</b>，月均仅 ¥15~59。</li>
+        <li>在详情页和种草笔记里做一张 <b>「3 年真实持有总成本对比表」</b>，把“拒绝千元硬件订阅税”打成核心爽点。</li>
+      </ul></div>
+    </div>
+    <div class="play rv">
+      <div class="no">05</div>
+      <div><span class="lbl">打法</span><h3>避坑帖评论区“求骂体验官”精准截流</h3></div>
+      <div class="data"><span class="lbl">数据支撑</span><span class="big">307<small> 评 · @比格少栋</small></span>得到、极米、Plaud 的高赞避坑帖（@乔不湿 150 评、@一块零五 公开求平替 / 贵替）评论区，聚集了刚退货、手持预算的精准买家。</div>
+      <div class="todo"><span class="lbl">我们的策略</span><ul>
+        <li>官方号 / 主理人去 20 篇高赞吐槽帖下真诚互动，定向寄送 20 台给“电子产品最严厉的父亲”。</li>
+        <li>做一波 <b>《我退掉了 1999 的得到和 Plaud，最后留下了这张卡》</b> 的真实逆袭口碑。</li>
+      </ul></div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 03 ============ -->
+<section class="sec" id="s3">
+  <div class="sec-head rv">
+    <div class="sec-no">03</div>
+    <div>
+      <div class="kicker">Pricing Landscape</div>
+      <h2>价格与订阅格局</h2>
+      <p>硬件价格本身差距不大，真正拉开差距的是“到期后每月还要花多少钱”。</p>
+    </div>
+  </div>
+  <div class="bento">
+    <div class="card chart-card rv">
+      <div class="kicker">硬件日常售价（取各产品主力款 / 起售价）</div>
+      <div class="bars" id="bars"></div>
+      <div class="legend"><span><i style="background:var(--accent)"></i>NovaCard（首发价）</span><span><i style="background:#B9B2A3"></i>竞品</span><span style="color:var(--accent)">橙字 = 到期后转写订阅成本</span></div>
+    </div>
+    <div class="card chart-note rv">
+      <div class="kicker" style="color:#8F887A">The Subscription Tax</div>
+      <h4>用户怕的不是一千块的卡，而是每年还要再交一千块的“订阅税”</h4>
+      <div class="hl">300<small style="font-size:18px;font-family:var(--sans)"> 分钟/月</small></div>
+      <p>Plaud 免费版额度，大约只够开 3 场会。</p>
+      <p>讯飞录音卡首年免费无限转写，靠这一点精准狙击 Plaud；NovaCard 则在会员期内无限转写，硬件本身不额外收月费。</p>
+    </div>
+    <div class="card tco rv">
+      <div class="tco-head">
+        <div><div class="kicker">3-Year Total Cost of Ownership</div><h3>3 年真实持有总成本对比</h3></div>
+        <p>场景：需要无限或大额转写的重度用户，3 年 = 36 个月。总成本 = 硬件价 + 赠送额度用完后的转写订阅费。</p>
+      </div>
+      <table>
+        <thead><tr><th>产品 / 档位</th><th>硬件</th><th>赠送额度</th><th>之后的订阅</th><th>3 年总成本</th><th style="text-align:right">合计</th></tr></thead>
+        <tbody>
+          <tr><td class="p">科大讯飞录音卡<small>基础转写</small></td><td>¥999</td><td>首年无限；第 2~3 年 1800 分/月</td><td>基础转写 ¥0</td><td><div class="tbar"><i style="left:0;width:22.2%"></i></div></td><td class="total">¥999</td></tr>
+          <tr class="us"><td class="p">NovaCard<small>Plus / Max 会员</small></td><td>¥699</td><td>3 个月 Max</td><td>33 个月 × ¥15~59，会员期内无限转写</td><td><div class="tbar"><i style="left:0;width:29.9%"></i><i class="range" style="left:29.9%;width:42.7%"></i></div></td><td class="total">¥1,194<small style="font-size:16px">~2,646</small></td></tr>
+          <tr><td class="p">Plaud Note Pro<small>Pro 档 · 1200 分/月</small></td><td>¥1189</td><td>免费版 300 分/月</td><td>¥339/年 × 3</td><td><div class="tbar"><i style="left:0;width:49%"></i></div></td><td class="total">¥2,206</td></tr>
+          <tr><td class="p">出门问问 TicNote<small>商务版 · 无限</small></td><td>¥649</td><td>前 6 个月 2100 分/月</td><td>¥1078/年 × 2.5</td><td><div class="tbar"><i style="left:0;width:74.3%"></i></div></td><td class="total">¥3,344</td></tr>
+          <tr><td class="p">Plaud Note Pro<small>卓越档 · 无限</small></td><td>¥1189</td><td>无</td><td>¥1099/年 × 3</td><td><div class="tbar"><i style="left:0;width:99.7%"></i></div></td><td class="total">¥4,486</td></tr>
+        </tbody>
+      </table>
+      <div class="tco-foot">
+        <div class="good"><b>对 Plaud / TicNote：价格是强杀伤点</b>同样是无限转写，NovaCard 3 年最低约 ¥1,194，只有 Plaud 无限档（¥4,486）的约 30%，比 TicNote 无限档省下约 ¥2,000。</div>
+        <div class="warn"><b>对讯飞：价格不占优，打功能</b>讯飞基础转写免费，3 年只要 ¥999。和讯飞比，卖点应落在「长期记忆 + 原生 Agent + 个人私产」，不要只拼价格。</div>
+      </div>
+      <p class="note">* 口径：NovaCard 月费区间 ¥15~59 取自原文（低值对应年付最低档，高值对应 Max 年费 ¥708 折月）；TicNote 无限年费 ¥1078 取自原文横评引用；Plaud 按首日即开通订阅计。得到、千问、钉钉 A1、安克、思必驰、极米原文未给出续费价格，暂不列入。数字为估算，发布前请以各品牌官方定价复核。</p>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 04 ============ -->
+<section class="sec" id="s4">
+  <div class="sec-head rv">
+    <div class="sec-no">04</div>
+    <div>
+      <div class="kicker">Competitor Profiles</div>
+      <h2>竞品档案</h2>
+      <p>大部分录音卡的主打人群是创业者、自由职业者、职场会议、数码和 AI 爱好者。差异化比较明显的只有两家：极米记得手环（投日记人群，有万赞爆款）和 Plaud（投 ADHD 人群）。</p>
+    </div>
+  </div>
+  <div class="landscape">
+    <div class="card rv"><h4>主打人群</h4><p>创业者、自由职业、职场会议、数码、AI 为主</p></div>
+    <div class="card rv"><h4>社媒传播卖点</h4><p>轻薄无感、长续航、AI 总结纪要 —— 高度同质化</p></div>
+    <div class="card rv"><h4>场景切入点</h4><p>职场会议、AI 工作流、搭建 xxx 体系</p></div>
+  </div>
+  <div class="filters" id="filters">
+    <button class="on" data-f="all">全部</button>
+    <button data-f="card">录音卡</button>
+    <button data-f="wear">手环 / 穿戴</button>
+    <button data-f="eco">生态绑定</button>
+  </div>
+  <div class="comp-grid" id="comps"></div>
+</section>
+
+<!-- ============ 05 ============ -->
+<section class="sec" id="s5">
+  <div class="sec-head rv">
+    <div class="sec-no">05</div>
+    <div>
+      <div class="kicker">Voice of Customer</div>
+      <h2>用户吐槽分析</h2>
+      <p>达人商单都在吹「超薄颜值、秒出纪要」，但自掏腰包的素人买家退货最多、骂得最狠的，并不是“能不能转文字”。</p>
+    </div>
+  </div>
+
+  <div class="insight rv">
+    <div class="k">核心<br>洞察</div>
+    <div>
+      <p>真实买家最痛的是下面五件事。这正是拥有全球 100W+ 成熟软件底座、原生长期记忆与个人 Agent 的 <b>NovaCard（星闪笔记）</b> 降维收割的黄金机会。</p>
+      <div class="pains"><span>把半成品软件拿来卖高价硬件</span><span>日记 / 纪要又臭又长还不准搜索</span><span>删了原音却删不掉 AI 乱打的错误记忆标签</span><span>砍老用户免费权益逼充高价年费</span><span>一股廉价 AI 模板味</span></div>
+    </div>
+  </div>
+
+  <div class="form-block">
+    <div class="form-title rv"><h3>录音卡类</h3><span>得到 GetSeed / Plaud / 钉钉 A1 / 千问 A2 / 讯飞</span></div>
+    <div class="pvs">
+      <div class="card pain-col rv"><h4>用户集中吐槽点</h4><ul class="pain-list">
+        <li><b>软件像半成品，管理一团乱麻</b>灵感速记与长会议混在一起；无批量删除 / 夜间模式；短录音不自动生成标题；长文无关键词搜索跳转。</li>
+        <li><b>吃相难看的割韭菜与背刺</b>Plaud 免费仅 300 分/月，无限卡 ¥1,099~1,299/年；得到把「发芽」从每天免费 5 次砍成非会员每月 5 次，同款硬件换壳卖 ¥999 / ¥1999 / ¥2999。</li>
+        <li><b>伪记忆与隐私失控</b>Plaud 碎片想法无法串联；得到删除原录音后错误职业标签依然存在且删不掉；千问 A2「转后即焚」，转错数字 / 人名无法回听。</li>
+        <li><b>声纹认人翻车 &amp; 多语言夸大</b>多人会议张冠李戴，客服让用户手动改说话人；外语转中文纪要达不到宣传效果。</li>
+        <li><b>硬件连接与磁吸痛点</b>得到 iPhone 快传卡死报错近 2 个月；带壳手机加引磁片太厚易丢；Plaud 专用充电线忘带即废；钉钉 A1 无震动反馈、大圆键易按错。</li>
+      </ul></div>
+      <div class="card sol-col rv"><h4>NovaCard 破局打法</h4><ul class="sol-list">
+        <li><b>打「百万用户成熟软件底盘」</b>闪念与长会议自动分流，5 秒语音自动生成精准标题，支持全局毫秒级搜索。</li>
+        <li><b>打「会员期内无限转写 0 焦虑」</b>首发 ¥699 送 3 个月 Max，硬件额外月费 ¥0，绝不搞千元订阅税或缩水背刺。</li>
+        <li><b>打「真·可控长期记忆 + 保留加密原声」</b>跨月 / 跨年串联记忆，随时修改 / 彻底删除任意记忆标签；点击文字即可回听原声核对。</li>
+        <li><b>打「100% 个人私产」</b>不绑钉钉 / 飞书，离职随时带走。</li>
+      </ul></div>
+    </div>
+    <div class="posts">
+      <a class="post rv" target="_blank" href="https://www.xiaohongshu.com/discovery/item/6a245208000000002201b6e8?source=webshare&xhsshare=pc_web&xsec_token=ABZaHzr82PNO1pZszcOrmm0D01ZBkrM-Vl3W6TG4N1iPk=&xsec_source=pc_share"><span class="av">乔</span><span><div class="t">《Getseed录音卡别买，就是个圈钱的半成品》</div><div class="m">@乔不湿 · <b>154 赞 / 150 评</b> · 痛批 9 大罪状</div></span></a>
+      <a class="post rv" target="_blank" href="https://www.xiaohongshu.com/explore/6a85624f000000002201683e?xsec_token=YBXJ0k0UuQ947kXuox41L5fCEJUXRRZ5MpBC_bWGG0_oo=&xsec_source=pc_search"><span class="av">乔</span><span><div class="t">《Getseed得到大脑，为啥用户不能删除信息呢？》</div><div class="m">@乔不湿 · 删不掉错误记忆</div></span></a>
+      <a class="post rv" target="_blank" href="https://www.xiaohongshu.com/explore/6a195bcb00000000380342b0?xsec_token=YB7ufh3TtMbCWXu8iQsR2y1-QRGtvKWndSa8s4xzfv0Dc=&xsec_source=pc_search"><span class="av">哼</span><span><div class="t">《冲了1999的得到大脑专家版，第二天退掉》</div><div class="m">@哼哼与唧唧 · 高价退货</div></span></a>
+      <a class="post rv" target="_blank" href="https://www.xiaohongshu.com/explore/6ab4d50a0000000014033755?xsec_token=YBKvIXNAbtY9nTmXmfViYPS9uMdswZADoT6h6JGUZ8X5s=&xsec_source=pc_search"><span class="av">土</span><span><div class="t">《避雷！888买了一个赛博护身符》</div><div class="m">@土豆茶茶 · <b>57 赞 / 76 评</b></div></span></a>
+      <a class="post rv" target="_blank" href="https://www.xiaohongshu.com/explore/6a8c66b3000000002202c565?xsec_token=YB1fP6wdzTfFDyQgVRBbbpgUcYltWLIM_6HGuUy0TH4pc=&xsec_source=pc_search"><span class="av">Z</span><span><div class="t">《现在还有人用 Plaud 吗？》</div><div class="m">@Zoi · <b>64 赞 / 83 评</b> · 碎片想法无法串联</div></span></a>
+      <a class="post rv" target="_blank" href="https://www.xiaohongshu.com/explore/6ab8ef57000000001803bc60?xsec_token=YBq3KpfzYbKubc8boNiPWAwykQGtXu0f46egNFVQOADtc=&xsec_source=pc_search"><span class="av">轩</span><span><div class="t">《plaud note pro试用求助 感觉不智能很智障》</div><div class="m">@xuan妈爱分享</div></span></a>
+      <a class="post rv" target="_blank" href="https://www.xiaohongshu.com/explore/6a819dc8000000003301fe72?xsec_token=YBhkp92NBZ1bxu_lZSQBGoFh_E_0EUHO_SAVENXvRzh-0=&xsec_source=pc_search"><span class="av">T</span><span><div class="t">《多语言转译中文纪要 plaud和科大讯飞都不行》</div><div class="m">@tinattttttttt · <b>108 赞 / 67 评</b></div></span></a>
+      <a class="post rv" target="_blank" href="https://www.xiaohongshu.com/explore/6a850d6f0000000026034723?xsec_token=YBImb9zY6WrXNu51z3Tz0xObc1TRAZlgzJj3BxcFshhMc=&xsec_source=pc_search"><span class="av">理</span><span><div class="t">《plaud notepin s的致命缺陷》</div><div class="m">@理想小岛 · <b>40 赞 / 47 评</b> · 不分说话人</div></span></a>
+      <a class="post rv" target="_blank" href="https://www.xiaohongshu.com/explore/69aa5ba0000000000e00f8aa?xsec_token=YBTBs20k3Sy8I9uUVGRDNyunL_CPclmInO7cIAuWfbe3E=&xsec_source=pc_search"><span class="av">折</span><span><div class="t">《只讲大实话，AI录音卡到底好不好用？》</div><div class="m">@折折熊 · <b>2,961 赞 / 236 评</b> · 5 款自购横评</div></span></a>
+    </div>
+  </div>
+
+  <div class="form-block">
+    <div class="form-title rv"><h3>手环 / 穿戴豆类</h3><span>极米记得手环 L1 / Plaud NotePin S / 安克飞书豆</span></div>
+    <div class="pvs">
+      <div class="card pain-col rv"><h4>用户集中吐槽点</h4><ul class="pain-list">
+        <li><b>全天候录音变成「5 屏裹脚布」</b>一天日记截 5 屏翻不到底；半小时聊天被切成五六条纪要，琐事全混在一起，且纪要居然不能搜索！</li>
+        <li><b>「金鱼记忆」名不副实</b>极米手环 AI 只有昨天和今天的记忆，几天前的事完全记不住。</li>
+        <li><b>一股廉价 AI 模板味 &amp; 到手没电</b>开箱零电量；App 排版被批“Hermes + DeepSeek 跑 2-3 版出来的模板味，毫无温度”。</li>
+        <li><b>刷短视频 / 看剧被误录污染记忆</b>全天候不关机，视频声音被识别成用户生活记录；物理删原音无法回溯。</li>
+        <li><b>无法录手机通话 &amp; 形态尴尬</b>戴手腕 / 领口无法贴手机录微信语音和电话；NotePin S 被吐槽体积偏大；安克豆脱离飞书后 App 体验拉胯。</li>
+      </ul></div>
+      <div class="card sol-col rv"><h4>NovaCard 破局打法</h4><ul class="sol-list">
+        <li><b>打「物理按键确定性启停 = 零误录」</b>一按即录、松手即停，绝不把刷抖音和闲聊塞进 AI 记忆库，只记高价值声音。</li>
+        <li><b>打「手机通话骨传导内录」</b>贴合手机背面清晰录制微信语音与电话，手环形态无法替代。</li>
+        <li><b>打「Apple 级原生软件审美」</b>拒绝廉价 AI 模板味，一屏极简摘要 + 一键展开逐字稿，直接调用 Agent 干活，支持导出 Markdown。</li>
+      </ul></div>
+    </div>
+    <div class="posts">
+      <a class="post rv" target="_blank" href="https://www.xiaohongshu.com/discovery/item/6ae49d3a00000000230128a5?source=webshare&xhsshare=pc_web&xsec_token=ABBYd5AtPmU94P2ujnKTMSflGV-wFbVPuk-OmHUm3B39M=&xsec_source=pc_share"><span class="av">比</span><span><div class="t">《2026.10.9开始用，实话实说（极米记得手环L1）》</div><div class="m">@比格少栋 · <b>206 赞 / 307 评</b> · 推广博主开小号讲真话</div></span></a>
+      <a class="post rv" target="_blank" href="https://www.xiaohongshu.com/discovery/item/6af009140000000014028e9c?source=webshare&xhsshare=pc_web&xsec_token=ABFjfWmEnSc0ehl7FyIemy1sh5ZBLaS98G4jNHdRlFcjE=&xsec_source=pc_share"><span class="av">一</span><span><div class="t">《极米记得 怎么会这么敷衍啊》</div><div class="m">@一块零五 · <b>24 评</b> · 求随手记灵感替代品，高管对线翻车</div></span></a>
+      <a class="post rv" target="_blank" href="https://www.xiaohongshu.com/explore/698354de000000001a02c1d5?xsec_token=YBJ03O80zhnKHygJN0LD-rfJoTdhM7oS9vp_0n7GRXxJw=&xsec_source=pc_search"><span class="av">K</span><span><div class="t">《Plaud NotePin S 实测｜先说缺点，再说真香》</div><div class="m">@Katia.ai · <b>47 赞 / 12 评</b></div></span></a>
+      <a class="post rv" target="_blank" href="https://www.xiaohongshu.com/explore/69085a910000000005003bf4?xsec_token=YBDWQH4PoiEPlMEjWsgJLmVL2RBTuVSczb1BygLZqlbZc=&xsec_source=pc_search"><span class="av">Y</span><span><div class="t">《Plaud NotePin S有点大啊 和佳明965对比》</div><div class="m">@yuki爱唱歌 · <b>76 赞 / 10 评</b></div></span></a>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 06 ============ -->
+<section class="sec" id="s6">
+  <div class="sec-head rv">
+    <div class="sec-no">06</div>
+    <div>
+      <div class="kicker">Organic Proof</div>
+      <h2>野生自来水实证</h2>
+      <p>小红书上已经有用户自发把「竞品硬件 + 星闪笔记」搭配使用。</p>
+    </div>
+  </div>
+  <div class="bento">
+    <article class="card evi rv">
+      <div class="who">野生实证 1 · @东岸</div>
+      <h3><a target="_blank" href="#organic-proof-demo-1">《Getseed录音卡 + 星闪笔记 = 神仙组合》↗</a></h3>
+      <p>用户买了得到的录音卡硬件，却专门把内容导进星闪笔记处理 —— 竞品自带 App 只有死板的转写与书库关联，而星闪笔记的交互、智能卡片和 AI 提炼能力远超硬件竞品。</p>
+    </article>
+    <article class="card evi rv">
+      <div class="who">野生实证 2 · @YH</div>
+      <h3><a target="_blank" href="#organic-proof-demo-2">《选笔记工具，别问哪个更好，问你最怕什么》↗</a></h3>
+      <p>「星闪笔记录完一段好想法，想跟 AI 深聊，发现得手动粘贴…」用户早已认可星闪笔记是捕捉灵感的最佳入口，此前唯一缺的就是一块随手盲按的物理硬件。</p>
+    </article>
+    <div class="card puzzle rv">
+      <h3>NovaCard 刚好补齐<br><em>最后一块拼图</em></h3>
+      <div class="pieces">
+        <div class="piece"><b>长期记忆</b>星闪笔记已有</div>
+        <div class="piece"><b>Agent 干活</b>星闪笔记已有</div>
+        <div class="piece new"><b>硬件盲按</b>NovaCard 补齐</div>
+      </div>
+    </div>
+    <div class="card action rv">
+      <div class="kicker" style="color:var(--accent)">Next Action · 高意向截流</div>
+      <h3>打造「连全网最挑剔的退货党都留下的 AI 语令卡」口碑战役</h3>
+      <p>去下面这些高赞避坑帖的评论区，定向邀请 20 位挑剔的退货党免费实测 NovaCard。</p>
+      <div class="targets">
+        <a target="_blank" href="https://www.xiaohongshu.com/discovery/item/6a245208000000002201b6e8?source=webshare&xhsshare=pc_web&xsec_token=ABZaHzr82PNO1pZszcOrmm0D01ZBkrM-Vl3W6TG4N1iPk=&xsec_source=pc_share">@乔不湿 ↗</a>
+        <a target="_blank" href="https://www.xiaohongshu.com/discovery/item/6af009140000000014028e9c?source=webshare&xhsshare=pc_web&xsec_token=ABFjfWmEnSc0ehl7FyIemy1sh5ZBLaS98G4jNHdRlFcjE=&xsec_source=pc_share">@一块零五（明确求替代品）↗</a>
+        <a target="_blank" href="https://www.xiaohongshu.com/explore/6ab4d50a0000000014033755?xsec_token=YBKvIXNAbtY9nTmXmfViYPS9uMdswZADoT6h6JGUZ8X5s=&xsec_source=pc_search">@土豆茶茶 ↗</a>
+        <a target="_blank" href="https://www.xiaohongshu.com/discovery/item/6ae49d3a00000000230128a5?source=webshare&xhsshare=pc_web&xsec_token=ABBYd5AtPmU94P2ujnKTMSflGV-wFbVPuk-OmHUm3B39M=&xsec_source=pc_share">@比格少栋 ↗</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <span>来源：<a href="https://github.com/waynefu2020/social-competitor-warroom" target="_blank">Social Competitor Warroom Skill · 脱敏演示模板（NovaCard 为虚构本品）</a></span>
+  <span>NovaCard · 星闪笔记 · 2026.11</span>
+</footer>
+</main>
+
+<script>
+const X = s => s; // links kept verbatim
+const comps = [
+  {name:"NovaCard（我们）",us:true,group:["card"],price:"¥699",priceNote:"首发 · 日常 ¥799",who:"新锐白领、内容创作者、超级个体（C 端）",
+   points:["自研软件","长期记忆","调用 Agent 干活","不绑钉钉飞书"],endorse:"全球 100 万+ 用户生态",
+   channel:"避开纯企业会议红海，主攻超级个体 / 一人公司、内容创作者、ADHD 灵感急救、AI 工作流极客；找头部网红带货 + 投流切片（类似安克找 papi）。",
+   quota:"赠 3 个月 Max 会员；到期后 Plus / Max 会员期内享无限转写（软件会员 ¥15~59/月）。"},
+  {name:"得到 GetSeed AI 录音卡",group:["card"],price:"¥888",priceNote:"周年版 ¥1188",who:"知识管理、企业中高层、知识创作者",
+   points:["会记录更会思考","第二大脑知识库","「发芽」调用 12 万书库"],endorse:"罗振宇推荐 · 得到 10 年内容积累",
+   channel:"得到 App 私域 + 高管视频号 + B 站 / 小红书自然发酵（基本是素人发帖，少有正式合作博主）。",
+   attack:"攻击传统录音笔“只转文字不思考”——调用 12 万电子书库帮想法「发芽」和「拷问」。",
+   cases:[["创业者 · 打工人必看✅如何让领导觉得你超靠谱‼️","https://www.xiaohongshu.com/discovery/item/6a6afd0e000000001d023cbc?source=webshare&xhsshare=pc_web&xsec_token=ABFNG2IKwX97M1HuxcQOnNBMxi-BKcTI_VSnbaXAkwU_c=&xsec_source=pc_share"],["数码 · 告别录音闲置！AI录音卡到底怎么选？","https://www.xiaohongshu.com/discovery/item/69e8eb280000000023012ab9?source=webshare&xhsshare=pc_web&xsec_token=ABpzPjCwMm2qNzRYYJ5wRzh6nEr6REMOJ1Ey1JrkAYqL8=&xsec_source=pc_share"]]},
+  {name:"千问 QwenNote A2",group:["card","eco"],price:"¥1169",priceNote:"日常价",who:"律师、HR 面试官、阿里生态打工人",
+   points:["轻薄磁吸","通话录音","AI 纪要","长续航","千问办公 Agent","4G eSIM 独立联网"],endorse:"阿里巴巴 / 钉钉 7 亿办公用户底座",
+   channel:"2026 云栖大会 + 小红书数码 / 自由职业博主；10 月底进李佳琦直播间，“买卡送价值 3000 元的 1 亿千问 Token”。",
+   attack:"eSIM 脱离手机独立转写攻击蓝牙卡断连漏传；「转后即焚」攻击泄密顾虑；「Agent 干活」攻击“只给纪要不执行”。",
+   cases:[["数码 · 打工人解放双手！把时间留给更重要的事💻","https://www.xiaohongshu.com/discovery/item/6add90d9000000002c0120c3?source=webshare&xhsshare=pc_web&xsec_token=ABh_NY_EzHglcpLEGQmiMyrjN1FVMg7-nRUjNpiobhycU=&xsec_source=pc_share"],["一人公司 · 大厂辞职后，我用这套AI工作流做自媒体📕","https://www.xiaohongshu.com/discovery/item/6ae31b1d000000001502038a?source=webshare&xhsshare=pc_web&xsec_token=ABcUqOFih-0Dl2mvodKNPr9GEUZcA5qVda5gZ1k9HtL60=&xsec_source=pc_share"]]},
+  {name:"钉钉 A1",group:["card","eco"],price:"¥699",priceNote:"日常价",who:"中小企业老板（采购发给销售）、钉钉重度打工人",
+   points:["轻薄磁吸","通话录音","AI 纪要","长续航","千问办公 Agent"],endorse:"阿里 / 钉钉底座 · 何同学推荐",
+   channel:"联合何同学把磁吸卡打成全民热议的科技潮品；抖音信息流饱和投流 + 小红书博主合作。",
+   attack:"¥699 定价攻击千元级录音卡的“硬件暴利”；“钉钉工作流无缝直连”攻击独立 App 的信息孤岛。",
+   cases:[["何同学 · 799元买张「卡」？钉钉在想什么","https://www.xiaohongshu.com/discovery/item/69a28a5300000000220331a3?source=webshare&xhsshare=pc_web&xsec_token=ABXpqj6orXQvymnWs5bBcO3aeK2d8riG-HB5luRe9pE6Y=&xsec_source=pc_share"],["职场 · 职场晋升必杀技：搭建工作知识库（3.0版本","https://www.xiaohongshu.com/discovery/item/698ae4af000000000b010d0a?source=webshare&xhsshare=pc_web&xsec_token=ABUQG3GuVNi3fzAvK_sUy-_mar1HI4FSE9xr5AABfrFMI=&xsec_source=pc_share"]]},
+  {name:"安克 AI 录音豆",group:["wear","eco"],price:"¥999",priceNote:"日常价",who:"一二线大厂 PM、飞书重度团队、追求穿搭的年轻白领",
+   points:["10g 重量","飞书 AI 一条龙","打造知识库"],endorse:"飞书生态 · papi酱推荐",
+   channel:"飞书 × 安克联合 PR + 数码 KOL 首测 → papi酱定制喜剧（137,545 赞 / 18,487 收藏）→ 15~30s 切片追投 + 28 单蒲公英腰部博主，统一带“papi酱同款录音豆”词根。",
+   attack:"「8g 领夹小圆豆」攻击卡片形态“贴手机背面、放桌上像审讯”；「飞书审美」攻击讯飞的“老干部土味外观”。",
+   cases:[["数码 · 只需10克！你外置大脑-安克飞书豆已到账！","https://www.xiaohongshu.com/discovery/item/6a912a89000000002501d8d7?source=webshare&xhsshare=pc_web&xsec_token=AB1na8p_ZRGEfglCiImYlKN6jO3nx5Z_5Qe_Z1AeJnDhk=&xsec_source=pc_share"],["职场植入 · 早下班，还能拿好绩效的3个秘诀","https://www.xiaohongshu.com/discovery/item/69ce4c01000000002102eb4e?source=webshare&xhsshare=pc_web&xsec_token=ABxsrsgpbOs6TBbb5PMcHo9059qrGvkpOxy1mOSPh45CI=&xsec_source=pc_share"],["职场 · Papi酱同款✨500强打工靠它告别加班","https://www.xiaohongshu.com/discovery/item/69d89c5f000000001f00018e?source=webshare&xhsshare=pc_web&xsec_token=ABSK4lmgqKdmO-rw8MDmWwpPWQsOg5VN8_rMkpM-oWcqI=&xsec_source=pc_share"]]},
+  {name:"思必驰 TalkNote 4G",group:["card"],price:"¥1279",priceNote:"日常价",who:"泛职场 · 政企采购",
+   points:["一键接入 Workbuddy","轻薄无感","AI 总结纪要"],endorse:"政企 B 端集采与商务礼品渠道",
+   channel:"小红书主打职场会议群体 + 政企采购；政企对价格不敏感，但看重方言识别、独立 4G 传稿、国产模型合规。",
+   attack:"「内置 4G + 45 小时续航」攻击蓝牙卡离手机变砖；「57 种方言 + 16 大行业词库」攻击通用大模型听不懂方言。",
+   quota:"免费 3000 分钟/月（首年）",
+   cases:[["AI · WorkBuddy最强硬件外挂，职场人太会用了！","https://www.xiaohongshu.com/discovery/item/6aacd3650000000028034b94?source=webshare&xhsshare=pc_web&xsec_token=AB2zXycB0AJ6PH_huB7TIJ55luCWlwMlR5w0gofaP9ZIk=&xsec_source=pc_share"],["职场 · 开完会还自己整理纪要？交给思必驰4G","https://www.xiaohongshu.com/discovery/item/6ac8a00f00000000140389bb?source=webshare&xhsshare=pc_web&xsec_token=ABvv6w9TbsmPd26EbovOjxVdUzup-rrrJjmEFBN6Afj1A=&xsec_source=pc_share"]]},
+  {name:"出门问问 TicNote",group:["card","wear"],price:"¥649",priceNote:"青春版 · 标准 ¥849 · 手表 ¥949",who:"创业者",
+   points:["轻薄无感","120+ 种语言转写","知识库管理","AI 总结模板"],endorse:"AIGC 第一股（02438.HK）· 注册用户 1000 万",
+   channel:"2025 年 6~7 月重金投 @数字生命卡兹克（3,663 赞）、@柳叶刀与小鼠标（4,447 赞）；2026 年 C 端投放缩减（仅 6 单），重心转向海外与企微 B 端。",
+   attack:"「Shadow AI 顿悟时刻 + 一键 AI 播客」攻击“文字太长没人看”；B 端用企微版工牌攻击销售外勤黑盒。",
+   quota:"送 6 个月每月 2100 分钟，之后 600 分钟/月",
+   cases:[["创业者 · 创业者必备｜企微专属录音卡告别熬夜写纪要","https://www.xiaohongshu.com/discovery/item/6a5993a4000000001101ccce?source=webshare&xhsshare=pc_web&xsec_token=ABhJB32c9cBh5GogsbnbrSpyL_kYfjgYccUKN0-JF8HaM=&xsec_source=pc_share"],["职场 · 普通人怎么搭建自己的AI工作流？直接抄作业","https://www.xiaohongshu.com/discovery/item/6a263597000000002202e540?source=webshare&xhsshare=pc_web&xsec_token=ABYNWtKa8QDTD6LJhBpE_qk6SBm6jXnbfn4Fm5D6pnG_I=&xsec_source=pc_share"]]},
+  {name:"科大讯飞系列",group:["card","wear"],price:"¥999",priceNote:"录音卡 · 录音环 ¥1099 · Magic ¥745",who:"体制内政企、商务中层、外贸、法务 / 记者",
+   points:["一键录音","无卡套直贴手机","一键提炼纪要待办","录音环磁吸变支架"],endorse:"A 股语音龙头（002230）· 国密安全",
+   channel:"小红书红人营销（图文 + 视频）主打职场会议，同时铺大量素人 KOC 铺量帖。",
+   attack:"攻击 Plaud / TicNote 的“高昂年费订阅制”与互联网品牌“方言 / 离线识别拉胯”。",
+   quota:"首年免费无限转写，第 2~3 年赠 1800 分/月；到期后基础转写 ¥0/月",
+   cases:[["创始人 · 能拉开职场差距的是，从“事无巨细”到“系统化","https://www.xiaohongshu.com/discovery/item/6a9fa2790000000029017cf1?source=webshare&xhsshare=pc_web&xsec_token=ABz3BZh4nnhCAm8VzkvhVT5ahe9qPKWwYMcdSfXnyIRqA=&xsec_source=pc_share"],["数码 · 把AI录音设备变成手机支架是什么样的体验","https://www.xiaohongshu.com/discovery/item/6ad8449d000000002c00f05d?source=webshare&xhsshare=pc_web&xsec_token=ABjOiFUsgZNV9pSlexhXU0km7I1qFOpf-eZcxSGzbN7n8=&xsec_source=pc_share"],["自媒体 · AI时代 更适合普通人的内容创作系统","https://www.xiaohongshu.com/discovery/item/6a2a4b95000000000803e91c?source=webshare&xhsshare=pc_web&xsec_token=ABGN99q_-o4I467f0s5XxROkpuuZyImK0MHM8Qc8L52ik=&xsec_source=pc_share"]]},
+  {name:"Plaud Note Pro / NotePin S",group:["card","wear"],price:"¥1189",priceNote:"日常价",who:"三高人群：创业老板、外贸、律师记者、ADHD、果粉",
+   points:["超薄无感","长续航","多模态输入","精准转写"],endorse:"全球销量第一 AI 纪要硬件 · 170+ 国家",
+   channel:"小红书 / 抖音红人营销（赛道合作内容量最多），主打创作者、自由职业、AI 博主、ADHD 人群。",
+   attack:"「全球销冠与苹果级工业设计」俯视国内模仿者；「专业场景深度摘要」攻击“只会傻瓜转文字”。",
+   quota:"免费版仅 300 分钟/月；Pro ¥339/年；无限时长 ¥1,099/年",
+   cases:[["创业 · AI工作流2.0公开！真正动嘴就把活全干完！","https://www.xiaohongshu.com/discovery/item/6acdb0570000000002011f4e?source=webshare&xhsshare=pc_web&xsec_token=ABN4TrdbWRLuegrYrBBS5iZXXxGFyu4vHCP_dOU6K8_98=&xsec_source=pc_share"],["ADHD · 我终于找到了ADHD大脑外挂的完全体！","https://www.xiaohongshu.com/discovery/item/6ac9f1b8000000000a01ddad?source=webshare&xhsshare=pc_web&xsec_token=AB2IjGdaVVRXwlLjwRXQoaqqxOHUANrhf4A-DfqNGnGrk=&xsec_source=pc_share"],["AI · 如何让 AI 读取消息记录，做人生规划！","https://www.xiaohongshu.com/discovery/item/6ad8a4be00000000330221e0?source=webshare&xhsshare=pc_web&xsec_token=ABjOiFUsgZNV9pSlexhXU0kl15FuhUZnnEk3XhE1TJ3ZY=&xsec_source=pc_share"],["自由职业 · howto给工作创建“黑匣子”：一键串联所有信息","https://www.xiaohongshu.com/discovery/item/6ace1ea600000000180126d6?source=webshare&xhsshare=pc_web&xsec_token=ABndA_jpBQSQatpXfwG16DR9gcpy8FiGm2_WiI58mjwAI=&xsec_source=pc_share"]]},
+  {name:"极米记得 AI 手环",group:["wear"],price:"¥496",priceNote:"日常价",who:"数码、创作者、生活记录",
+   points:["无感佩戴","全天候自动记录","App 生成图文日记"],endorse:"极米科技（688696.SH）",
+   channel:"小红书红人营销 + 官方号；深圳湾 INNO100 线下极客沙龙 + 科技大 V 深测，前小米高管王亮、电丸科技 AK 站台。",
+   attack:"攻击所有需要“手动按一下”的录音卡——灵感来时来不及掏手机，手环全天候自动记。",
+   cases:[["生活记录 · 困扰我几百年的问题终于被解决了","https://www.xiaohongshu.com/discovery/item/6ae1768d0000000023012954?source=webshare&xhsshare=pc_web&xsec_token=ABH5rrTOiQbBINIj20w424I1XwCDTNBn3S7ywGOyx4_fo=&xsec_source=pc_share"],["数码 · 这一定是未来记录的新方式：AI记忆手环","https://www.xiaohongshu.com/discovery/item/6adf208c000000001500ce6c?source=webshare&xhsshare=pc_web&xsec_token=ABca-S7k9i0xZmYr-8o0OKEJa5yzBQZR2IilTff-2iyUg=&xsec_source=pc_share"],["自媒体 · 不要用力，自媒体才会真的做起来！","https://www.xiaohongshu.com/discovery/item/6aec1c7800000000030072f1?source=webshare&xhsshare=pc_web&xsec_token=ABic1xJ7DNQOPwq5yydHbfzZac1ImgmFGW2PTdIfC4-nQ=&xsec_source=pc_share"]]}
+];
+
+const esc = s => String(s).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/"/g,"&quot;");
+const groupName = {card:"录音卡",wear:"手环 / 穿戴",eco:"生态绑定"};
+function render(){
+  document.getElementById("comps").innerHTML = comps.map(c=>{
+    const chips = c.points.map(p=>`<span class="chip">${esc(p)}</span>`).join("");
+    if(c.us) return `<article class="card comp us rv" data-g="${c.group.join(" ")}">
+      <div><div class="group" style="color:#FF8A4C">★ Our Product</div><h3 style="font-size:30px;margin:8px 0 6px">${esc(c.name)}</h3>
+        <div class="price" style="text-align:left;font-size:56px">${c.price}<small class="muted">${esc(c.priceNote)}</small></div></div>
+      <div style="display:flex;flex-direction:column;gap:12px"><div class="kicker" style="color:#8F887A">目标人群</div><div>${esc(c.who)}</div>
+        <div class="kicker" style="color:#8F887A">核心卖点</div><div class="chips">${chips}</div>
+        <div class="kicker" style="color:#8F887A">背书</div><div>${esc(c.endorse)}</div></div>
+      <div style="display:flex;flex-direction:column;gap:12px"><div class="kicker" style="color:#8F887A">渠道打法</div><div class="muted" style="font-size:14px">${esc(c.channel)}</div>
+        <div class="kicker" style="color:#8F887A">额度 &amp; 月费</div><div class="muted" style="font-size:14px">${esc(c.quota)}</div></div>
+    </article>`;
+    const cases = (c.cases||[]).map(([t,u])=>`<div><a target="_blank" href="${esc(u)}">${esc(t)} ↗</a></div>`).join("");
+    return `<article class="card comp rv" data-g="${c.group.join(" ")}">
+      <div class="group">${c.group.map(g=>groupName[g]).join(" · ")}</div>
+      <div class="top"><h3>${esc(c.name)}</h3><div class="price">${c.price}<small>${esc(c.priceNote)}</small></div></div>
+      <div class="who">${esc(c.who)}</div>
+      <div class="chips">${chips}</div>
+      <div class="attack"><b>THEIR ATTACK · 进攻话术</b>${esc(c.attack)}</div>
+      <details><summary>背书 · 渠道 · 种草案例</summary>
+        <div class="row"><b>背书</b>${esc(c.endorse)}</div>
+        <div class="row"><b>主要渠道打法</b>${esc(c.channel)}</div>
+        ${c.quota?`<div class="row"><b>赠送额度 &amp; 到期月费</b>${esc(c.quota)}</div>`:""}
+        ${cases?`<div class="row"><b>种草案例</b>${cases}</div>`:""}
+      </details>
+    </article>`;
+  }).join("");
+}
+render();
+
+document.getElementById("filters").addEventListener("click",e=>{
+  const b=e.target.closest("button"); if(!b) return;
+  document.querySelectorAll("#filters button").forEach(x=>x.classList.toggle("on",x===b));
+  const f=b.dataset.f;
+  document.querySelectorAll(".comp").forEach(el=>{
+    el.style.display = (f==="all"||el.dataset.g.split(" ").includes(f)||el.classList.contains("us"))?"":"none";
+  });
+});
+
+// price bars
+const prices=[
+  ["NovaCard",699,"会员期内无限转写",true],["钉钉 A1",699,""],["极米记得手环",496,""],["出门问问",649,"6 个月后 600 分/月"],
+  ["得到 GetSeed",888,"专家版 ¥1999"],["安克录音豆",999,""],["讯飞录音卡",999,"首年免费无限"],
+  ["千问 A2",1169,""],["Plaud Note Pro",1189,"无限卡 ¥1099/年"],["思必驰 4G",1279,"首年 3000 分/月"]
+].sort((a,b)=>a[1]-b[1]);
+const max=1300;
+document.getElementById("bars").innerHTML=prices.map(([n,v,s,us])=>`<div class="bar${us?" us":""}"><div class="name">${n}</div><div class="track"><div class="fill" data-w="${v/max*100}"></div></div><div class="val">¥${v}${s?`<em>${s}</em>`:""}</div></div>`).join("");
+
+// reveal + bars animate
+const io=new IntersectionObserver(es=>es.forEach(e=>{
+  if(e.isIntersecting){e.target.classList.add("in");
+    e.target.querySelectorAll(".fill").forEach(f=>f.style.width=f.dataset.w+"%");
+    io.unobserve(e.target);}
+}),{threshold:.12});
+document.querySelectorAll(".rv").forEach(el=>io.observe(el));
+
+// progress + nav highlight
+const links=[...document.querySelectorAll("nav.top a")];
+addEventListener("scroll",()=>{
+  const h=document.documentElement; document.getElementById("progress").style.width=(h.scrollTop/(h.scrollHeight-h.clientHeight)*100)+"%";
+  let cur=""; document.querySelectorAll("section.sec").forEach(s=>{if(s.getBoundingClientRect().top<120) cur=s.id});
+  links.forEach(a=>a.classList.toggle("on",a.getAttribute("href")==="#"+cur));
+},{passive:true});
+</script>
+</body>
+</html>
