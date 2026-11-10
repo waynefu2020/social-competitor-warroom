@@ -18,28 +18,49 @@ sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 from common import load_brief, read_jsonl, write_jsonl  # noqa: E402
 
 PAID = re.compile(r'#ad\b|#ads\b|#sponsored|#spon\b|paid partnership|sponsored by|in partnership with|#partner\b|#advertisement|'
-                  r'#werbung|#anzeige|#광고|#협찬광고|#publi\b|#adv\b|\bAD\b|\[ad\]|\(ad\)|#gesponsert', re.I)
+                  r'付费合作|商业合作|广告合作|赞助播出|#广告|#werbung|#anzeige|#광고|#협찬광고|#publi\b|#adv\b|\bAD\b|\[ad\]|\(ad\)|#gesponsert', re.I)
 GIFT = re.compile(r'#pr\b|\bpr\b|gifted|#gift\b|pr package|pr box|pr haul|sent me|sent by|c/o|thank you (so much )?@|thanks (to )?@|'
-                  r'#협찬|협찬|提供|ご提供|いただきました|#presente|recebido|regalo de', re.I)
+                  r'品牌赠送|免费寄样|获赠|#협찬|협찬|提供|ご提供|いただきました|#presente|recebido|regalo de', re.I)
 CODE = re.compile(r'code[: ]+[\"“”\']?[a-z0-9]{3,}|use (my )?code|[0-9]+ ?% ?off|discount|coupon|promo ?code|affiliate|쿠폰|クーポン|割引|descuento|cupom|rabatt', re.I)
 RETAIL = re.compile(r'yesstyle|stylevana|amazon|amzn|geni\.us|shopee|lazada|sephora|ulta|shein|target|best ?buy|costco|walmart|tiktok ?shop|tiktokmadem|'
                     r'orange cart|yellow (basket|cart)|keranjang|carrito|link in (my )?bio|bio link|sjv\.io', re.I)
 SHOP = re.compile(r'tiktok ?shop|tiktokmadem|orange cart|yellow (basket|cart)|keranjang|carrito', re.I)
 
 
+# Remove only the denied signal, not the whole line: a disclaimer can coexist
+# with a real affiliate disclosure or a separate sponsor disclosure.
+_DENIED_EN = r"(?:sponsored|sponsorship|#?ads?|advertisement|paid partnership|gifted|affiliate(?: links?)?|discount codes?)"
+_NEGATION_FILLER = r"(?:(?:a|an|any|paid|being|affiliated|with|or|in|way|is|this|video|financially|directly|commercially|personally|otherwise)\s+){0,6}"
+NEGATED_SIGNAL = re.compile(
+    r"\b(?:not|never|no|isn't|aren't|wasn't|without)\s+" + _NEGATION_FILLER + _DENIED_EN + r"\b"
+    # Only explicit conjunctions continue the denial; commas / 'but' end it.
+    + r"(?:\s+(?:or|nor)\s+" + _NEGATION_FILLER + _DENIED_EN + r"\b)*|"
+    r"\b(?:unsponsored|non[- ]sponsored|not[- ]sponsored)\b|"
+    r"(?:非|不是|并非|没有|无|未)(?:任何|接受|收取|品牌|商业|付费|的)*"
+    r"(?:广告|赞助|合作|赠送|寄样|获赠|佣金|推广)", re.I)
+
+
+def signal_text(text):
+    return NEGATED_SIGNAL.sub(' ', text or '')
+
+
 def classify(text, paid_flag, shop_flag, disclosed):
+    text = signal_text(text)
     if paid_flag or PAID.search(text):
         return 'paid'
     if GIFT.search(text):
         return 'gifted'
-    if shop_flag or CODE.search(text) or RETAIL.search(text):
+    if shop_flag or CODE.search(text):
         return 'affiliate'
     if disclosed:
         return 'collab'
+    # Historical key retained for report compatibility; absence of a signal
+    # is unknown disclosure status, not proof of organic distribution.
     return 'organic'
 
 
 def channel(text, shop_flag):
+    text = signal_text(text)
     if shop_flag or SHOP.search(text):
         return 'TikTok Shop'
     for name, rx in [('Amazon', r'amazon|amzn|geni\.us'), ('YesStyle/Stylevana', r'yesstyle|stylevana'), ('Shopee/Lazada', r'shopee|lazada'),
@@ -183,7 +204,7 @@ def main():
     json.dump(handles, open(os.path.join(R, 'ig_handles.json'), 'w'), ensure_ascii=False)
 
     print(f'时间窗 {b["_window"]}；剔除：{dict(dropped)}')
-    for plat in ('TikTok', 'Instagram', 'YouTube', '小红书', '抖音'):
+    for plat in ('TikTok', 'Instagram', 'YouTube', '小红书', '抖音', 'B站'):
         P = [p for p in rows if p['platform'] == plat]
         if not P:
             continue

@@ -42,36 +42,57 @@ def ig_code(p):
     return m.group(1) if m else p['id']
 
 
+def checked_get(path, params):
+    # Never turn a failed page into a successful empty comment cache.
+    return tikhub.require_success(tikhub.get(path, params))
+
+
+def read_comment_cache(path):
+    try:
+        with open(path, encoding='utf-8') as f:
+            data = json.load(f)
+    except (OSError, ValueError):
+        return None
+    if isinstance(data, dict) and data.get('complete') is True:
+        rows = data.get('comments')
+    else:
+        # Old empty lists could represent a swallowed API error: refetch them once.
+        rows = data if isinstance(data, list) and data else None
+    if not isinstance(rows, list) or any(not isinstance(r, list) or len(r) != 2 for r in rows):
+        return None
+    return rows
+
+
 def fetch(p, pages):
     """Return [(text, likes)] for one post. Response shapes were checked against live TikHub calls."""
     out, cur, tok = [], 0, None
     for _ in range(pages):
         plat = p['platform']
         if plat == 'TikTok':
-            d = tikhub.get('/api/v1/tiktok/app/v3/fetch_video_comments', dict(aweme_id=p['id'], cursor=cur, count=20)).get('data') or {}
+            d = checked_get('/api/v1/tiktok/app/v3/fetch_video_comments', dict(aweme_id=p['id'], cursor=cur, count=20)).get('data') or {}
             out += [(c.get('text'), c.get('digg_count')) for c in d.get('comments') or []]
             cur, more = d.get('cursor'), d.get('has_more')
         elif plat == '抖音':
-            d = tikhub.get('/api/v1/douyin/app/v3/fetch_video_comments', dict(aweme_id=p['id'], cursor=cur, count=20)).get('data') or {}
+            d = checked_get('/api/v1/douyin/app/v3/fetch_video_comments', dict(aweme_id=p['id'], cursor=cur, count=20)).get('data') or {}
             out += [(c.get('text'), c.get('digg_count')) for c in d.get('comments') or []]
             cur, more = d.get('cursor'), d.get('has_more')
         elif plat == 'YouTube':
             q = dict(video_id=p['id'], sort_by='top')
             if tok:
                 q['continuation_token'] = tok
-            d = tikhub.get('/api/v1/youtube/web_v2/get_video_comments', q).get('data') or {}
+            d = checked_get('/api/v1/youtube/web_v2/get_video_comments', q).get('data') or {}
             out += [(c.get('content'), c.get('like_count')) for c in d.get('comments') or []]
             tok = more = d.get('continuation_token')
         elif plat == 'Instagram':
             q = dict(code_or_url=ig_code(p))
             if tok:
                 q['pagination_token'] = tok
-            d = tikhub.get('/api/v1/instagram/v2/fetch_post_comments', q).get('data') or {}
+            d = checked_get('/api/v1/instagram/v2/fetch_post_comments', q).get('data') or {}
             out += [(c.get('text'), c.get('comment_like_count')) for c in (d.get('data') or {}).get('items') or []]
             tok = more = d.get('pagination_token')
         elif plat == '小红书':
             # First page only: the follow-up cursor is a JSON context the endpoint does not accept back reliably.
-            d = (tikhub.get('/api/v1/xiaohongshu/app_v2/get_note_comments', dict(note_id=p['id'])).get('data') or {}).get('data') or {}
+            d = (checked_get('/api/v1/xiaohongshu/app_v2/get_note_comments', dict(note_id=p['id'])).get('data') or {}).get('data') or {}
             out += [(c.get('content'), c.get('like_count')) for c in d.get('comments') or []]
             more = False
         else:
@@ -108,7 +129,7 @@ def main():
     for plat in sorted({p['platform'] for p in posts}):
         P = sorted([p for p in posts if p['platform'] == plat], key=metric, reverse=True)
         pick += [p for p in P if p['cat'] != 'organic'][:a.commercial] + [p for p in P if p['cat'] == 'organic'][:a.organic]
-    todo = [p for p in pick if not os.path.exists(os.path.join(cdir, f"{p['platform']}_{p['id']}.json"))]
+    todo = [p for p in pick if read_comment_cache(os.path.join(cdir, f"{p['platform']}_{p['id']}.json")) is None]
     planned = len(todo) * a.pages
     bal, err = tikhub.balance()
     est = planned * tikhub.PRICE_PER_CALL * 3  # comment endpoints cost more than search
@@ -121,7 +142,7 @@ def main():
 
     def job(p):
         rows = fetch(p, a.pages)
-        json.dump(rows, open(os.path.join(cdir, f"{p['platform']}_{p['id']}.json"), 'w', encoding='utf-8'), ensure_ascii=False)
+        json.dump({'complete': True, 'comments': rows}, open(os.path.join(cdir, f"{p['platform']}_{p['id']}.json"), 'w', encoding='utf-8'), ensure_ascii=False)
     with cf.ThreadPoolExecutor(max_workers=a.workers) as ex:
         list(ex.map(job, todo))
 
@@ -130,7 +151,7 @@ def main():
         f = os.path.join(cdir, f"{p['platform']}_{p['id']}.json")
         if not os.path.exists(f):
             continue
-        for text, likes in json.load(open(f, encoding='utf-8')):
+        for text, likes in read_comment_cache(f) or []:
             text = re.sub(r'\s+', ' ', text or '').strip()
             if len(text) < 4:
                 continue

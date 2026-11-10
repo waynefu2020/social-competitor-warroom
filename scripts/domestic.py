@@ -30,7 +30,7 @@ XHS_SORTS = (('popularity_descending', 'xhs_hot_pages', 3), ('general', 'xhs_pag
 
 
 def save(path, data):
-    json.dump(data, open(path, 'w', encoding='utf-8'), ensure_ascii=False)
+    tikhub.save_cache(path, data)
 
 
 def post(path, body, retries=3):
@@ -42,14 +42,17 @@ def post(path, body, retries=3):
     for attempt in range(retries):
         try:
             with urllib.request.urlopen(req, timeout=90) as r:
-                return json.load(r)
+                data = json.load(r)
+                error = tikhub.response_error(data)
+                return {'error': error} if error else data
         except urllib.error.HTTPError as e:
             err = f'HTTP {e.code}'
             if e.code in (400, 401, 402, 403, 404, 422):
                 break
         except Exception as e:
             err = str(e)
-        time.sleep(2 + attempt * 3)
+        if attempt + 1 < retries:
+            time.sleep(2 + attempt * 3)
     return {'error': err}
 
 
@@ -71,8 +74,10 @@ def xhs_search(b, i, kw, sort, pages):
     n = 0
     for page in range(1, pages + 1):
         p = os.path.join(b['_raw'], 'cn', f'xhs_{i}_{sort}_p{page}.json')
-        d = json.load(open(p)) if os.path.exists(p) else tikhub.get(
-            '/api/v1/xiaohongshu/app_v2/search_notes', dict(keyword=kw, page=page, sort_type=sort, note_type='不限', time_filter='半年内'))
+        d = tikhub.read_cache(p)
+        if d is None:
+            d = tikhub.get(
+                '/api/v1/xiaohongshu/app_v2/search_notes', dict(keyword=kw, page=page, sort_type=sort, note_type='不限', time_filter='半年内'))
         save(p, d)
         items = xhs_items(d)
         n += len(items)
@@ -85,9 +90,11 @@ def dy_search(b, i, kw, sort, pages):
     n, cur, sid, bt = 0, 0, '', ''
     for page in range(pages):
         p = os.path.join(b['_raw'], 'cn', f'dy_{i}_s{sort}_p{page}.json')
-        d = json.load(open(p)) if os.path.exists(p) else post(
-            '/api/v1/douyin/search/fetch_video_search_v2',
-            dict(keyword=kw, cursor=cur, sort_type=sort, publish_time='180', filter_duration='0', content_type='0', search_id=sid, backtrace=bt))
+        d = tikhub.read_cache(p)
+        if d is None:
+            d = post(
+                '/api/v1/douyin/search/fetch_video_search_v2',
+                dict(keyword=kw, cursor=cur, sort_type=sort, publish_time='180', filter_duration='0', content_type='0', search_id=sid, backtrace=bt))
         save(p, d)
         data = d.get('data') or {}
         n += len(data.get('business_data') or [])
@@ -212,9 +219,9 @@ def main():
         xrows, drows = parse_xhs(b), parse_dy(b)
         brand = b['_brand_regex']
         uids = sorted({r['uid'] for r in xrows if r.get('uid') and brand.search(r['text'])
-                       and not os.path.exists(os.path.join(b['_raw'], 'cn', 'xhsuser', f"{r['uid']}.json"))})
+                       and tikhub.read_cache(os.path.join(b['_raw'], 'cn', 'xhsuser', f"{r['uid']}.json")) is None})
         vids = sorted({r['id'] for r in drows if brand.search(r['text'])
-                       and not os.path.exists(os.path.join(b['_raw'], 'cn', 'dydetail', f"{r['id']}.json"))})
+                       and tikhub.read_cache(os.path.join(b['_raw'], 'cn', 'dydetail', f"{r['id']}.json")) is None})
         planned = len(uids) + len(vids)
 
     bal, err = tikhub.balance()

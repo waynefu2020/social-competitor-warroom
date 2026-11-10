@@ -17,7 +17,7 @@ import tikhub  # noqa: E402
 
 
 def save(path, data):
-    json.dump(data, open(path, 'w', encoding='utf-8'), ensure_ascii=False)
+    tikhub.save_cache(path, data)
 
 
 def tiktok_job(b, i, kw, sort):
@@ -70,14 +70,14 @@ def youtube_job(b, i, q):
 
 def yt_detail(b, vid):
     p = os.path.join(b['_raw'], 'ytinfo', f'{vid}.json')
-    if os.path.exists(p) and os.path.getsize(p) > 200:
+    if tikhub.read_cache(p) is not None:
         return
     save(p, tikhub.get('/api/v1/youtube/web_v2/get_video_info', dict(video_id=vid, language_code='en')))
 
 
 def ig_profile(b, h):
     p = os.path.join(b['_raw'], 'igprof', f'{h}.json')
-    if os.path.exists(p) and os.path.getsize(p) > 200:
+    if tikhub.read_cache(p) is not None:
         return
     save(p, tikhub.get('/api/v1/instagram/v1/fetch_user_info_by_username', dict(username=h)))
 
@@ -102,8 +102,8 @@ def main():
             sys.exit('先运行 normalize.py，生成 yt_candidates.json 和 ig_handles.json。')
         vids = [v['id'] for v in json.load(open(cand))]
         handles = json.load(open(hand))
-        todo_v = [v for v in vids if not os.path.exists(os.path.join(b['_raw'], 'ytinfo', f'{v}.json'))]
-        todo_h = [h for h in handles if not os.path.exists(os.path.join(b['_raw'], 'igprof', f'{h}.json'))]
+        todo_v = [v for v in vids if tikhub.read_cache(os.path.join(b['_raw'], 'ytinfo', f'{v}.json')) is None]
+        todo_h = [h for h in handles if tikhub.read_cache(os.path.join(b['_raw'], 'igprof', f'{h}.json')) is None]
         planned = len(todo_v) + len(todo_h)
 
     bal, err = tikhub.balance()

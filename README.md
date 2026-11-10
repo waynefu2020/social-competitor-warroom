@@ -132,7 +132,7 @@ social-competitor-warroom/
 │   ├── domestic.py                                  # 国内小红书（蒲公英）+ 抖音（星图）批量采集
 │   ├── comments.py                                  # 跨平台高赞评论拉取与「吐槽/问价/疑虑/认可」信号分类
 │   ├── normalize.py                                 # 去噪清洗、5级商业属性判定与 20 条样本抽查
-│   ├── analyze.py                                   # 统计中位数、量级性价比、打法画像与对标库定位
+│   ├── analyze.py                                   # 统计中位数、量级表现、合作信号与对标库定位
 │   ├── labels.py                                    # 博主赛道与「内容形式×沟通人群×卖点」标注统计
 │   ├── agent_reach_import.py                        # 无 TikHub Key 时的 Agent-Reach (yt-dlp/xhs-cli) 免费导入
 │   ├── tikhub.py / common.py / lexicons.py / doctor.py
@@ -149,12 +149,17 @@ social-competitor-warroom/
 │   ├── dribbble-style-picker.html                   # 5 套 Dribbble 视觉风格实时交互预览画廊
 │   └── editorial-report-reference.html              # 780+ 行完整单文件 HTML 标杆模板（已脱敏演示版）
 ├── assets/
-│   └── brief.example.json                           # 跨平台竞品采集配置模板
+│   ├── brief.example.json                           # 跨平台竞品采集配置模板
+│   └── report_template.html                         # 五风格单文件报告模板
 ├── README.md
 └── LICENSE
 ```
 
 ---
+
+## 回归测试
+
+在仓库目录运行 `python3 -B -m unittest discover -s tests -v`。测试使用离线样例，不读取 API Key，不产生付费调用。
 
 ## 📄 License
 

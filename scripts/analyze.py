@@ -8,6 +8,7 @@ import collections
 import csv
 import datetime
 import json
+import math
 import os
 import re
 import statistics
@@ -17,9 +18,9 @@ sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 from common import SKILL_DIR, load_brief, read_jsonl  # noqa: E402
 from lexicons import POINTS, THEMES  # noqa: E402
 
-PLATS = ['TikTok', 'Instagram', 'YouTube', '小红书', '抖音']
+PLATS = ['TikTok', 'Instagram', 'YouTube', '小红书', '抖音', 'B站']
 CATS = ['organic', 'gifted', 'affiliate', 'paid', 'collab']
-CN = {'organic': '自然内容', 'gifted': '寄样(PR)', 'affiliate': '联盟带货', 'paid': '付费合作', 'collab': '品牌合作(未注明)'}
+CN = {'organic': '未识别合作信号', 'gifted': '寄样(PR)', 'affiliate': '联盟带货', 'paid': '付费合作', 'collab': '品牌合作(未注明)'}
 TIERS = ['纳米 <1万', '小 1-10万', '中 10-50万', '大 50-100万', '头部 100万+', '未知']
 
 
@@ -46,8 +47,13 @@ def lang(t):
     return 'en'
 
 
+def valid_metric(value):
+    return (isinstance(value, (int, float)) and not isinstance(value, bool)
+            and math.isfinite(value) and value >= 0)
+
+
 def med(xs):
-    xs = [x for x in xs if isinstance(x, (int, float))]
+    xs = [x for x in xs if valid_metric(x)]
     return [statistics.median(xs) if xs else None, len(xs)]
 
 
@@ -65,11 +71,13 @@ LIKE_PLATS = ('小红书', '抖音')  # no public view counts
 
 def metric(p):
     v = p.get('likes') if p['platform'] in LIKE_PLATS else p.get('views')
-    return v if isinstance(v, (int, float)) else None
+    return v if valid_metric(v) else None
 
 
 def tier_perf(P):
     """Which follower tier of commercial creators performs best: absolute median and median per follower."""
+    if len({p['platform'] for p in P}) > 1:
+        raise ValueError('tier_perf requires one platform; do not mix metrics')
     out = []
     for t in TIERS[:-1]:
         ps = [p for p in P if p['cat'] != 'organic' and tier(p.get('followers')) == t and metric(p) is not None]
@@ -79,11 +87,12 @@ def tier_perf(P):
         r = [metric(p) / p['followers'] for p in ps if p.get('followers')]
         out.append(dict(tier=t, n=len(ps), creators=len({p.get('handle') for p in ps}), median=statistics.median(v),
                         per_follower=statistics.median(r) if r else None))
-    # Price roughly scales with followers, so per-follower is the cost-efficiency proxy when prices are unknown;
-    # it favours small tiers by nature, so report the absolute winner next to it.
+    # Per-follower is a descriptive ratio only, not cost efficiency or ROI.
+    # Prices, conversions, and attributed revenue are not observed.
     ok = [x for x in out if x['n'] >= 5]
     ok = ok if len(ok) >= 2 else []  # a single eligible tier has nothing to beat
-    return dict(rows=out, unit='点赞' if P and P[0]['platform'] in LIKE_PLATS else '播放',
+    return dict(rows=out, platform=P[0]['platform'] if P else None,
+                ratio_note='指标/粉丝仅描述触达或互动，不代表成本效率或 ROI', unit='点赞' if P and P[0]['platform'] in LIKE_PLATS else '播放',
                 best_abs=max(ok, key=lambda x: x['median'])['tier'] if ok else None,
                 best_ratio=max(ok, key=lambda x: x['per_follower'] or 0)['tier'] if ok else None)
 
@@ -92,19 +101,20 @@ def content_matrix(posts, labels_path):
     """Content direction table from the manual labels: form x creator type x audience x selling point, with examples."""
     if not os.path.exists(labels_path):
         return None
-    lab = {(r['平台'], r['博主']): r for r in csv.DictReader(open(labels_path, encoding='utf-8-sig'))}
+    with open(labels_path, encoding='utf-8-sig') as f:
+        lab = {(r['平台'], r['博主']): r for r in csv.DictReader(f)}
     groups = collections.defaultdict(list)
     for p in posts:
         r = lab.get((p['platform'], p.get('handle') or ''))
         key = r and (r.get('内容形式') or '').strip()
         if key:
-            groups[key].append((p, r))
+            groups[(p['platform'], key)].append((p, r))
     rows = []
-    for form, items in sorted(groups.items(), key=lambda x: -len(x[1])):
+    for (platform, form), items in sorted(groups.items(), key=lambda x: -len(x[1])):
         top = lambda col: [k for k, _ in collections.Counter(r.get(col, '').strip() for _, r in items if r.get(col, '').strip()).most_common(3)]
         ex = sorted(items, key=lambda it: -(metric(it[0]) or 0))[:3]
         vals = [metric(p) for p, _ in items if metric(p) is not None]
-        rows.append(dict(form=form, n=len(items), creator_types=top('博主类型'), audiences=top('沟通人群'), points=top('传播卖点'),
+        rows.append(dict(form=form, platform=platform, n=len(items), metric_n=len(vals), creator_types=top('博主类型'), audiences=top('沟通人群'), points=top('传播卖点'),
                          median=statistics.median(vals) if vals else None, unit='点赞' if items[0][0]['platform'] in LIKE_PLATS else '播放',
                          examples=[dict(u=p.get('url'), h=p.get('handle'), p=p['platform'], v=metric(p)) for p, _ in ex]))
     return rows or None
@@ -115,14 +125,16 @@ def brand_led(p):
 
 
 def archetype(k):
-    r, org, comm_aff = k.get('brandled_vs_organic_views'), k['organic_share'], k.get('affiliate_of_commercial')
-    if r is not None and r >= 5:
-        return '买量型', f'TikTok 品牌主导内容的播放中位数是自然内容的 {r:.0f} 倍，声量主要靠投放买来。'
-    if org >= 0.6 and (r is None or r <= 1):
-        return '自来水型', f'{org:.0%} 的内容是用户自发内容，且自然内容播放不低于品牌主导内容，声量主要靠用户自传播。'
+    # Disclosure and search samples do not establish paid amplification,
+    # organic causality, conversion, or a brand's overall marketing strategy.
+    total = k.get('total', 0)
+    commercial = total * (1 - k.get('organic_share', 1))
+    if total < 30 or commercial < 5:
+        return '证据不足', '合作披露或样本不足，不能判断声量驱动力；未识别合作信号不等于自然内容。'
+    comm_aff = k.get('affiliate_of_commercial')
     if comm_aff is not None and comm_aff >= 0.5:
-        return '联盟铺量型', f'商业内容里 {comm_aff:.0%} 是联盟带货，靠分佣让大量中小博主铺量。'
-    return '混合型', '付费、寄样、联盟和自然内容都有一定比重，没有单一驱动力。'
+        return '联盟信号较多', f'已识别商业信号的样本里 {comm_aff:.0%} 为联盟/带货信号，不能据此推断成交或投放效果。'
+    return '合作信号混合', '仅描述检索样本的合作信号分布；播放差异不能证明买量，未披露内容不能证明用户自传播。'
 
 
 def main():
@@ -174,9 +186,14 @@ def main():
     comm_n = n - allc['organic']
     kpi = dict(
         total=n, creators=len({(p['platform'], p['handle']) for p in posts}),
-        organic_share=allc['organic'] / n, paid_share=allc['paid'] / n, gifted_share=allc['gifted'] / n,
+        organic_share=allc['organic'] / n, unclassified_share=allc['organic'] / n,
+        organic_definition='兼容字段：未识别合作信号，不代表确认自然内容', paid_share=allc['paid'] / n, gifted_share=allc['gifted'] / n,
         affiliate_share=allc['affiliate'] / n, collab_share=allc['collab'] / n, bycat=dict(allc),
-        brandled_vs_organic_views=(bl_v / org_v) if (bl_v and org_v) else None,
+        brandled_vs_organic_views=(bl_v / org_v) if (bl_v is not None and org_v and
+            tt['views']['organic'][1] >= 5 and tt['views_brandled'][1] >= 5) else None,
+        brandled_vs_organic_views_n={'brandled': (tt.get('views_brandled') or [None, 0])[1],
+                                   'unclassified': (tt.get('views') or {}).get('organic', [None, 0])[1]},
+        brandled_vs_organic_views_platform='TikTok',
         affiliate_of_commercial=(allc['affiliate'] / comm_n) if comm_n else None,
         commercial_follower_median=med([p.get('followers') for p in posts if p['cat'] != 'organic'])[0],
     )
@@ -190,10 +207,10 @@ def main():
                        countries=[[c.get('countryName'), c.get('share')] for c in (sw.get('topCountries') or [])[:6]])
         kpi['social_traffic_share'] = (ts.get('socialOrganic') or 0) + (ts.get('socialPaid') or 0)
     kpi['archetype'], kpi['archetype_reason'] = archetype(kpi)
-    # The archetype leans on view medians; with few view-bearing posts it is a hint, not a verdict.
-    with_views = sum(1 for p in posts if p['platform'] in ('TikTok', 'YouTube') and isinstance(p.get('views'), (int, float)))
+    # Keep coverage visible; disclosure patterns remain descriptive even with larger samples.
+    with_views = sum(1 for p in posts if p['platform'] in ('TikTok', 'Instagram', 'YouTube', 'B站') and valid_metric(p.get('views')))
     if n < 100 or with_views < 30:
-        kpi['archetype'] += '（倾向，样本不足）'
+        kpi['archetype'] += '（描述性结果，样本不足）'
         kpi['archetype_reason'] += f'但样本只有 {n} 条、带播放量的 {with_views} 条，需要更完整的数据验证。'
 
     bench_path = os.path.join(SKILL_DIR, 'references', 'benchmarks.json')
@@ -233,16 +250,16 @@ def main():
         json.dump(bench + [me], open(bench_path, 'w', encoding='utf-8'), ensure_ascii=False, indent=2)
 
     print(f"打法画像：{kpi['archetype']} —— {kpi['archetype_reason']}")
-    print(f"共 {n} 条 / {kpi['creators']} 位博主 | 自然 {kpi['organic_share']:.0%} · 寄样 {kpi['gifted_share']:.0%} · 联盟 {kpi['affiliate_share']:.0%} · "
+    print(f"共 {n} 条 / {kpi['creators']} 位博主 | 未识别合作 {kpi['organic_share']:.0%} · 寄样 {kpi['gifted_share']:.0%} · 联盟 {kpi['affiliate_share']:.0%} · "
           f"付费 {kpi['paid_share']:.1%} · 品牌合作 {kpi['collab_share']:.0%}")
     for pn, d in plat.items():
         v = d['views']
         if not any(v[c][1] for c in CATS):  # 小红书、抖音没有公开播放量
             lk = d['likes']
-            print(f"{pn}: {d['total']} 条 / {d['creators']} 人 | 点赞中位数 自然 {lk['organic'][0]} · 付费 {lk['paid'][0]} · 联盟 {lk['affiliate'][0]} "
+            print(f"{pn}: {d['total']} 条 / {d['creators']} 人 | 点赞中位数 未识别合作 {lk['organic'][0]} · 付费 {lk['paid'][0]} · 联盟 {lk['affiliate'][0]} "
                   f"| 商业博主粉丝中位数 {d['fmed_comm']}")
             continue
-        print(f"{pn}: {d['total']} 条 / {d['creators']} 人 | 播放中位数 自然 {v['organic'][0]} · 联盟 {v['affiliate'][0]} · 品牌主导 {d['views_brandled'][0]} "
+        print(f"{pn}: {d['total']} 条 / {d['creators']} 人 | 播放中位数 未识别合作 {v['organic'][0]} · 联盟 {v['affiliate'][0]} · 品牌主导 {d['views_brandled'][0]} "
               f"| 商业博主粉丝中位数 {d['fmed_comm']} | 渠道 {d['channels'][:4]}")
     for pn, d in plat.items():
         tp = d['tier_perf']

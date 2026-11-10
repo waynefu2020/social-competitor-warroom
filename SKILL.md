@@ -1,6 +1,6 @@
 ---
 name: social-competitor-warroom
-description: 社媒竞品作战室（海内外全平台 × 全品类竞品策略拆解、红人投放雷达、长视频口播植入/赞助短链深挖、真实用户吐槽验真、四大派别进攻话术与 5 套 Dribbble 视觉风格高颜值 HTML 报告生成）。当用户想要做「海内外社媒竞品调研」「小红书/抖音/B站/YouTube/TikTok/Instagram 竞品拆解」「SaaS/App/美妆/消费品/AI硬件新品上市攻防话术」「抓取竞品近半年/1年 YouTube 或社媒付费商单」「扒竞品评论区真实差评/避坑帖」「完善飞书/本地竞品表格」「某个人群该投哪类博主」或「把竞品资料生成高颜值网页报告」时立即激活本技能。融合了 competitor-kol-radar 全套脚本管线：支持本地文件或飞书文档（lark-cli）输入；采集优先用 TikHub API（配合 yt-dlp 补全缺失字段），无 Key 时自动无缝降级为「Agent 联网调研 + Agent-Reach」免费方案；内置 5 套 Dribbble 顶级视觉设计风格（先向用户展示 5 张预览图供 5 选 1，再生成报告）。
+description: 社媒竞品作战室（海内外全平台 × 全品类竞品策略拆解、红人投放雷达、长视频口播植入/赞助短链深挖、真实用户吐槽验真、四大派别进攻话术与 5 套 Dribbble 视觉风格高颜值 HTML 报告生成）。当用户想要做「海内外社媒竞品调研」「小红书/抖音/B站/YouTube/TikTok/Instagram 竞品拆解」「SaaS/App/美妆/消费品/AI硬件新品上市攻防话术」「抓取竞品近半年/1年 YouTube 或社媒付费商单」「扒竞品评论区真实差评/避坑帖」「完善飞书/本地竞品表格」「某个人群该投哪类博主」或「把竞品资料生成高颜值网页报告」时立即激活本技能。融合了 competitor-kol-radar 全套脚本管线：支持本地文件或飞书文档（lark-cli）输入；采集优先用 TikHub API（配合 yt-dlp 补全缺失字段），无 Key 时由 Agent 按兜底手册切换为「Agent 联网调研 + Agent-Reach」免费方案；内置 5 套 Dribbble 顶级视觉设计风格（先向用户展示 5 张预览图供 5 选 1，再生成报告）。
 ---
 
 # ⚔️ 社媒竞品作战室（Social Competitor Warroom · 海内外全平台 × 全品类版）
@@ -21,7 +21,7 @@ description: 社媒竞品作战室（海内外全平台 × 全品类竞品策略
 4. **飞书非必选，零门槛输入**：
    - 用户**不需要**有飞书。优先支持直接读取用户上传的本地文件（Excel / CSV / Markdown / PDF / 截图 / 口述产品定位）。仅当用户主动给出飞书链接时才调用 `lark-cli`。
 5. **采集双轨制（TikHub API + `yt-dlp` 混合补全优先 ➡️ 免费降级 `Agent 联网 + Panniantong/Agent-Reach`）**：
-   - 优先使用内置脚本（`scripts/`）调用 **TikHub API** 抓取精确结构化数据；当 YouTube 接口偶发缺失发布日期或播放量时，自动用 `yt-dlp` 并发补齐。若无 TikHub Key，自动无缝切换至 **Agent 联网搜索 + [Panniantong/Agent-Reach](https://github.com/Panniantong/Agent-Reach)** 免费采集。
+   - 优先使用内置脚本（`scripts/`）调用 **TikHub API** 抓取精确结构化数据；当 YouTube 接口偶发缺失发布日期或播放量时，自动用 `yt-dlp` 并发补齐。若无 TikHub Key，由 Agent 按兜底手册切换至 **Agent 联网搜索 + [Panniantong/Agent-Reach](https://github.com/Panniantong/Agent-Reach)** 免费采集。
 6. **视觉风格先展示 5 张预览图，让用户 5 选 1**：
    - 生成最终 HTML 报告前，先向用户展示 `resources/previews/` 下的 **5 张 Dribbble 风格预览大图**，让用户选定 **1 种**后再输出。
 
@@ -50,7 +50,7 @@ description: 社媒竞品作战室（海内外全平台 × 全品类竞品策略
    - **第二轮**：运行 `scripts/yt_sponsor_radar.py`，对专属短链与 `"sponsored by <brand>"` 进行深度翻页检索，拉取完整详情，并用 `--enrich-missing` 自动调 `yt-dlp` 补齐缺失的发布日期与播放量，自动导出按播放量排序的付费商单 CSV 与统计 JSON。
 2. **海外多平台雷达（TikTok + Instagram + YouTube + 评论区槽点）**：
    ```bash
-   S=/Users/waynefu2024/Desktop/Marketing1/.agents/skills/social-competitor-warroom/scripts
+   S="$(pwd)/scripts"  # 先进入本技能目录；也可改为实际安装路径
    python3 -I $S/collect.py --brief brief.json --stage search --dry-run   # 预估调用次数与余额
    python3 -I $S/collect.py --brief brief.json --stage search
    python3 -I $S/normalize.py --brief brief.json
@@ -67,7 +67,7 @@ description: 社媒竞品作战室（海内外全平台 × 全品类竞品策略
    ```
 
 ### 轨道 B：零成本免费方案（Agent 联网调研 + `Panniantong/Agent-Reach`）
-当用户未配置 `TIKHUB_API_KEY` 时，自动切换至 [references/fallback-agent-reach.md](references/fallback-agent-reach.md)：
+当用户未配置 `TIKHUB_API_KEY` 时，由 Agent 按以下手册切换至 [references/fallback-agent-reach.md](references/fallback-agent-reach.md)：
 - 使用 `scripts/agent_reach_import.py` 调用 `yt-dlp`（YouTube / TikTok / B站）与 `xhs-cli`（小红书，保留 `xsec_token`）拉取数据；
 - 配合 Agent 内置联网搜索（`Exa` / `WebSearch`）与 `Jina Reader`（`https://r.jina.ai/<URL>`）深挖 Reddit (`r/...`)、Trustpilot、App Store / Google Play 1~3 星差评与官网定价页。
 
@@ -98,6 +98,8 @@ description: 社媒竞品作战室（海内外全平台 × 全品类竞品策略
 ---
 
 ## Step 3：提炼「高管作战室」四大战略决策模块
+
+以下模块以证据充分为前提：缺资料时标记「待验证」并说明缺口，不强凑数量、不把建议写成已验证成效；预算配比是待测试建议，不能由播放/粉丝比推出 ROI。
 
 无论调研的是 AI 硬件、SaaS 软件还是美妆消费品，最终报告必须提炼出以下 **4 个高管决策模块**：
 
@@ -135,6 +137,8 @@ description: 社媒竞品作战室（海内外全平台 × 全品类竞品策略
 - [ ] **集中度与样本量标注**：单一账号占比 >30% 或单一语种/国家占比 >60% 时，是否已标出 `⚠ 集中度提示`？
 
 ---
+
+报告生成命令：选定风格后，按 [references/report-spec.md](references/report-spec.md) 准备 `narrative.json`，运行 `python3 -I "$S/analyze.py" --brief brief.json`，再运行 `python3 -I "$S/build_report.py" --brief brief.json --style editorial`（替换为选定风格）。
 
 ## 参考文件导航（References & Scripts）
 
