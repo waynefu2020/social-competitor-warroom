@@ -14,14 +14,13 @@
 
 ## ✨ 为什么需要这个 Skill？
 
-普通的 AI 竞品调研只会罗列枯燥的「产品 A 卖点、产品 B 价格」静态表格。而真正能帮新品打赢上市战役与出海增长的**社媒竞品作战室**，一次性为你解决 **6 大战略与执行难题**：
+普通的 AI 竞品调研只会罗列枯燥的「产品 A 卖点、产品 B 价格」静态表格。而真正能帮新品打赢上市战役与出海增长的**社媒竞品作战室**，一次性为你解决 **5 大战略与执行难题**：
 
 1. **全品类自适应拆解（不仅限于硬件）**：自动识别 **AI 软件/SaaS/App**（如 Manus、Granola、Wispr Flow、Gamma）、**美妆个护 D2C**（如花知晓 Flower Knows）、**智能硬件**（如 Plaud、录音卡）与**教育/消费品**，动态切换卖点、留存飞轮与渠道转化指标。
 2. **海内外红人商单「赞助指纹深挖（Sponsor Fingerprint）」**：不止搜品牌词，更能从 YouTube / TikTok / IG / B站 / 小红书描述栏中**逆向提取专属商单追踪短链与兑换码**（如 `go.granola.ai/名`、`manus.im/redeem?c=码`、`ref.wisprflow.ai/名`、`gamma.yt.link/码`），精准剥离**「明确付费赞助（口播植入 vs 垂直专场）」**、**「PR 礼盒寄样」**、**「分佣联盟/底栏常驻工具单」**与**「纯自然自来水」**。
 3. **必拆「🟢 爆款内容 vs 🔴 效果差的内容」**：用真实播放中位数告诉你竞品哪类内容跑出了百万播放（如*泛高净值理财/商业播客 30-60s 口播植入*、*丢给 AI 一个真实完整项目一镜到底挑战*），哪类内容彻底扑街（如*纳米号拆分的机械式功能说明书 SEO 教程，仅几十播放*），帮团队直接省下试错预算。
 4. **四大派别进攻话术（4-Faction Battle Matrix）**：把市面上 5~15 款竞品归入 4 个典型流派，针对每一派的软肋给出一针见血的销售/种草反击金句。
-5. **3 年真实持有总成本 (TCO) / 订阅与礼盒经济模型精算**：撕开「硬件便宜订阅贵」或「免费试用扣费陷阱」的伪装，算清硬件 36 个月 TCO、SaaS Token/Pro 年费或美妆全套礼盒（Full-Set Box）的真实账单。
-6. **100% 带原帖链接验真的真实用户吐槽（Voice of Customer）**：严格过滤品牌公关软文，深挖小红书避坑帖、YouTube/TikTok/B站评论区高赞反水评论、Reddit (`r/...`) 与 App Store 1~3 星差评，**每一条吐槽均附带可点击验真的原帖链接（含 `xsec_token` 或视频直达 URL）**。
+5. **100% 带原帖链接验真的真实用户吐槽（Voice of Customer）**：严格过滤品牌公关软文，深挖小红书避坑帖、YouTube/TikTok/B站评论区高赞反水评论、Reddit (`r/...`) 与 App Store 1~3 星差评，**每一条吐槽均附带可点击验真的原帖链接（含 `xsec_token` 或视频直达 URL）**。
 
 ---
 
@@ -31,7 +30,7 @@
 | :--- | :--- | :--- | :--- |
 | **💻 AI 软件 / SaaS / App** | Manus, Granola, Wispr Flow, Gamma, Genspark | 60% 泛高净值频道口播植入 + 40% 真项目一镜到底专场；定制短链归因；1~3个月免费 Pro / 积分钩子；订阅年费与额度限制 | YouTube, X/Twitter, Reddit, Product Hunt, B站, 小红书 |
 | **💄 美妆 / 个护 / 潮流 D2C** | Flower Knows (花知晓), Casetify, 完美日记 | 包装视觉锤与开箱分享欲（Unboxing）；PR 礼盒寄样 vs 联盟分佣；Full-Set 礼盒客单价；TikTok Shop / Ulta / 线下快闪店 (`#popup`) | TikTok, Instagram Reels, YouTube Shorts, 小红书, 抖音 |
-| **🎙️ 智能硬件 / 消费电子** | Plaud, 录音卡, 极米手环, 运动相机 | 硬件形态与底层软件体验；硬件买断价 + 36个月隐形订阅税 (3-Year TCO)；跨生态联动（如 MCP 工作流）；退货党评论区截流 | 小红书, 抖音, YouTube, TikTok, Amazon Reviews, Reddit |
+| **🎙️ 智能硬件 / 消费电子** | Plaud, 录音卡, 极米手环, 运动相机 | 硬件形态与底层软件体验；硬件日常定价与核心卖点；跨生态联动（如 MCP 工作流）；退货党评论区截流 | 小红书, 抖音, YouTube, TikTok, Amazon Reviews, Reddit |
 | **🎓 教育 / 知识服务 / 工具** | Turbo AI, Studley AI, Coconote, 得到 | 结果交付承诺（如 4.0 GPA / 提分 / 知识库发芽）；免费转付费漏斗；校园/私域社群裂变 | TikTok, App Store / Google Play 评论, 小红书, 视频号 |
 
 ---

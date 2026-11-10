@@ -6,13 +6,13 @@
 
 ## 一、全品类分析维度自适应矩阵（不仅限于 AI 硬件）
 
-根据用户所属赛道，自动切换报告中的「核心卖点」「价格与 TCO 算账」「渠道信号」与「用户吐槽」拆解维度：
+根据用户所属赛道，自动切换报告中的「核心卖点」「价格与性价比」「渠道信号」与「用户吐槽」拆解维度：
 
-| 品类赛道 | 代表案例 | 价格与真实成本算账（第 03 章） | 红人渠道与转化收口（第 02/04 章） | 真实用户差评深挖阵地（第 05 章） |
+| 品类赛道 | 代表案例 | 价格与规格对比（第 03 章） | 红人渠道与转化收口（第 02/04 章） | 真实用户差评深挖阵地（第 05 章） |
 | :--- | :--- | :--- | :--- | :--- |
-| **1. AI 软件 / SaaS / App**<br>*(效率/Agent/笔记/设计)* | Manus, Granola, Wispr Flow, Gamma, Genspark | **免费额度上限 vs 年付/月付订阅总成本 (1~3年)** + Token/Credits 消耗速度 + 博主专属试用钩子（如 `1-3个月免费Pro` / `送1000积分`） | **60% 泛高净值频道 30-60s 口播植入**（理财/商业播客/装修Vlog）+ **40% 真项目一镜到底专场** + 简介首行定制短链（`go.brand.ai/名`） | Reddit (`r/productivity`, `r/SaaS`)、Product Hunt、App Store / Google Play 1-3星差评、YouTube 评论区（痛点：扣费不透明、额度秒空、Bot 闯入会议尴尬、导出受限） |
+| **1. AI 软件 / SaaS / App**<br>*(效率/Agent/笔记/设计)* | Manus, Granola, Wispr Flow, Gamma, Genspark | **免费额度上限 vs 订阅方案** + Token/Credits 消耗速度 + 博主专属试用钩子（如 `1-3个月免费Pro` / `送1000积分`） | **60% 泛高净值频道 30-60s 口播植入**（理财/商业播客/装修Vlog）+ **40% 真项目一镜到底专场** + 简介首行定制短链（`go.brand.ai/名`） | Reddit (`r/productivity`, `r/SaaS`)、Product Hunt、App Store / Google Play 1-3星差评、YouTube 评论区（痛点：扣费不透明、额度秒空、Bot 闯入会议尴尬、导出受限） |
 | **2. 美妆 / 个护 / 潮流消费品 D2C**<br>*(彩妆/服饰/家居/宠物)* | Flower Knows (花知晓), 完美日记, Casetify | **主力单品价 vs 礼盒全套端盒价 (Full-Set Box)** + 折扣码让利幅度（`5%~15% off`）+ 跨境邮费门槛 | **PR 礼盒寄样开箱 (Gifted Unboxing)** + TikTok Shop 挂车 + YesStyle/Amazon 第三方零售联盟 + 线下快闪店 (`#popup`) 与 Ulta/药妆店入驻 | TikTok/IG 开箱评论区、Reddit (`r/MakeupAddiction`)、Trustpilot（痛点：包装华丽但实用性差、色号不适合欧美肤色、物流慢、溢价高） |
-| **3. 智能硬件 / 消费电子**<br>*(AI硬件/穿戴/影像/家居)* | Plaud, 录音卡, 极米手环, 运动相机 | **硬件首付买断价 + 赠送时长 + 36个月隐形订阅税 (3-Year TCO)** + 专用配件损耗成本 | 头部数码大V开箱（Unbox Therapy）+ 垂直职业场景（建筑师/律师/医护/ADHD）+ 官网 DTC 折扣码 + Amazon/Best Buy/日本量贩店 | 小红书高赞退货帖、Amazon 1-2星 Verified Purchase 差评、Reddit（痛点：半成品软件配高价硬件、砍老用户权益、断连、续航虚标） |
+| **3. 智能硬件 / 消费电子**<br>*(AI硬件/穿戴/影像/家居)* | Plaud, 录音卡, 极米手环, 运动相机 | **硬件单机买断价 vs 配件与软件权益** | 头部数码大V开箱（Unbox Therapy）+ 垂直职业场景（建筑师/律师/医护/ADHD）+ 官网 DTC 折扣码 + Amazon/Best Buy/日本量贩店 | 小红书高赞退货帖、Amazon 1-2星 Verified Purchase 差评、Reddit（痛点：半成品软件配高价硬件、砍老用户权益、断连、续航虚标） |
 | **4. 教育 / 知识服务 / 垂直工具**<br>*(EdTech/语言/职场学习)* | Turbo AI, Studley AI, Coconote, 得到 | **免费试用期陷阱 vs 学期/年度订阅费** + 竞品替代成本（如替代 Quizlet / 线下辅导班） | 学生 UGC 真实故事（“靠它拿 4.0 GPA”）+ ADHD 助学场景 + 校园大使/联盟分佣铺量 | App Store 差评、TikTok 评论区、Reddit (`r/college`)（痛点：免费转付费诱导扣款、题库死板、学术合规风险） |
 
 ---
