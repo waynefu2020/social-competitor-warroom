@@ -37,15 +37,30 @@
 - 报告中引用的每一条素人避坑帖、高管对线帖、横评帖，**100% 附带真实可点击的原帖 URL**，老板/合伙人随时点击验真。
 
 ### 4. 内置 5 套 Dribbble 殿堂级视觉风格（先选 1 种再生成）
-生成 HTML 报告前，Skill 会自动展示 5 套完全不同排版骨架与字体的视觉预览（可打开 [`resources/dribbble-style-picker.html`](resources/dribbble-style-picker.html) 实时交互预览），由你任选 1 种生成独立单文件 HTML：
+生成 HTML 报告前，Skill 会自动向你展示 5 套完全不同排版骨架与字体的视觉预览图（也可打开 [`resources/dribbble-style-picker.html`](resources/dribbble-style-picker.html) 实时交互预览），由你**任选 1 种**生成独立单文件 HTML：
 
-| 编号 | 风格名称 | 视觉基因与排版骨架 | 最适合场景 |
+| 风格代码 | 风格名称 | 视觉基因与排版骨架 | 最适合场景 |
 | :--- | :--- | :--- | :--- |
-| **01** | **Editorial 暖白社论风** *(默认推荐)* | *Monocle* / * Kinfolk* 杂志感 · 暖米纸底 `#F6F2EA` + 朱砂橙 `#D84A1B` + 衬线大标题 | 给老板 / 合伙人 / 投资人深度阅读、品牌战略复盘 |
-| **02** | **Linear Dark 极客暗黑风** | Linear / Raycast 质感 · 深邃曜石黑 `#090A0F` + 电光紫蓝微光边框 + 赛博毛玻璃 | AI 硬件、SaaS、开发者工具、科技新品发布会作战室 |
-| **03** | **Swiss Grid 瑞士国际主义网格** | 12 栏裸露黑色网格线 `1.5px solid #111` + 国际克莱因蓝 `#0038FF` + 巨型序号 | 投行级竞品拆解、硬核参数与 3 年 TCO 财务精算 |
-| **04** | **Neo-Brutalism 新粗野主义波普** | Gumroad / Figma 潮流感 · 高饱和奶油黄 + 粗黑描边 `#000` + 硬朗偏移阴影 `5px 5px 0 #000` | 新消费品牌、Z 世代社媒种草策略、广告 Agency 比稿提案 |
-| **05** | **Apple Bento 苹果发布会便当盒** | Apple Keynote 质感 · 苹果浅灰底 `#F5F5F7` + `28px` 超大圆角白卡 + 渐变大字报数字 | CEO 全员大会演示、产品经理评审会、大屏直接投屏汇报 |
+| `editorial` | **① 暖纸社论杂志风** *(默认推荐)* | *Kinfolk* / *Monocle* 杂志感 · 米白暖纸底 `#F4F1EA` + 爱马仕橙 `#C2410C` + 橄榄绿破局卡 | 给老板 / 合伙人 / 投资人深度阅读、品牌战略复盘 |
+| `bento-dark` | **② 暗黑流光便当盒风** | Linear / Raycast 质感 · 深邃曜石黑 `#090B10` + 1px 微光边框 + 翡翠绿/靛蓝高亮 | AI 产品、智能硬件、SaaS、科技新品发布会作战室 |
+| `mckinsey` | **③ 麦肯锡高管作战看板** | Pitch / Stripe 商务尽调风 · 纯净白灰底 + 深海蓝 `#0B1F3A` + Action Title 结论先行 | 正式商业立项汇报、投融资尽调、B2B 企业服务 |
+| `swiss` | **④ 瑞士国际主义网格风** | Readymag / Pentagram 先锋风 · `2px solid #111` 粗黑网格线 + 0圆角硬边阴影 + 瑞士红 `#E3261C` | 潮流硬件、设计驱动品牌、超级个体/独立开发者 |
+| `xhs-craft` | **⑤ 小红书原生手账拆解风** | 小红书万赞干货笔记感 · 方格手账纸 `#FFFDF6` + 荧光笔半截涂抹 + 和纸胶带便利贴 | 社媒运营团队脑暴、生活方式品类、直接截图发小红书 |
+
+#### ① 暖纸社论杂志风 (`editorial` · 默认推荐)
+![① 暖纸社论杂志风 (editorial)](resources/previews/01-editorial.png)
+
+#### ② 暗黑流光便当盒风 (`bento-dark`)
+![② 暗黑流光便当盒风 (bento-dark)](resources/previews/02-bento-dark.png)
+
+#### ③ 麦肯锡高管作战看板 (`mckinsey`)
+![③ 麦肯锡高管作战看板 (mckinsey)](resources/previews/03-mckinsey.png)
+
+#### ④ 瑞士国际主义网格风 (`swiss`)
+![④ 瑞士国际主义网格风 (swiss)](resources/previews/04-swiss.png)
+
+#### ⑤ 小红书原生手账拆解风 (`xhs-craft`)
+![⑤ 小红书原生手账拆解风 (xhs-craft)](resources/previews/05-xhs-craft.png)
 
 ---
 
@@ -115,6 +130,7 @@ social-competitor-warroom/
 │   ├── dribbble-5-styles.md                 # 5 套 Dribbble 视觉风格完整 CSS 变量与排版规范
 │   └── feishu-sync-guide.md                 # 飞书文档（lark-cli）读取与带链接回写指南
 ├── resources/
+│   ├── previews/                            # 5 套 Dribbble 视觉风格高清预览大图 (PNG)
 │   ├── dribbble-style-picker.html           # 5 套 Dribbble 视觉风格实时交互预览画廊
 │   └── editorial-report-reference.html      # 780+ 行完整单文件 HTML 标杆模板（已脱敏演示版）
 ├── README.md

@@ -22,6 +22,8 @@
 ## 风格 1：暖纸社论杂志风 (`editorial` · Kinfolk / Monocle Editorial) —— 【默认最推荐】
 > **完全复刻 内置 Editorial 经典暖白研报模板 的经典高雅质感**，适合给老板、合伙人、投资人深度阅读。
 
+![风格 1：暖纸社论杂志风 (editorial)](../resources/previews/01-editorial.png)
+
 - **色彩 Token**：
   ```css
   :root {
@@ -48,6 +50,8 @@
 ## 风格 2：暗黑流光便当盒风 (`bento-dark` · Linear / Raycast Dark Bento)
 > **Dribbble 科技榜第 1 名的暗黑玻璃拟态 Bento 风格**，适合 AI 产品、智能硬件、SaaS 工具路演投屏。
 
+![风格 2：暗黑流光便当盒风 (bento-dark)](../resources/previews/02-bento-dark.png)
+
 - **色彩 Token**：
   ```css
   :root {
@@ -72,6 +76,8 @@
 ## 风格 3：麦肯锡高管作战看板 (`mckinsey` · Pitch / Stripe Executive Deck)
 > **冷峻、精准、高信噪比的华尔街投行与顶级咨询公司汇报风格**，适合正式商业立项会与投融资尽调。
 
+![风格 3：麦肯锡高管作战看板 (mckinsey)](../resources/previews/03-mckinsey.png)
+
 - **色彩 Token**：
   ```css
   :root {
@@ -95,6 +101,8 @@
 ## 风格 4：瑞士国际主义网格风 (`swiss` · Readymag / Pentagram Brutalist)
 > **先锋设计工作室偏爱的瑞士网格与新粗野主义（Neo-Brutalism）**，适合潮流硬件、设计驱动品牌、超级个体。
 
+![风格 4：瑞士国际主义网格风 (swiss)](../resources/previews/04-swiss.png)
+
 - **色彩 Token**：
   ```css
   :root {
@@ -117,6 +125,8 @@
 
 ## 风格 5：小红书原生手账拆解风 (`xhs-craft` · GoodNotes Viral Craft)
 > **小红书万赞干货博主的方格纸 + 荧光笔 + 便利贴手账风格**，不仅好看，还能直接按模块截图发小红书图文。
+
+![风格 5：小红书原生手账拆解风 (xhs-craft)](../resources/previews/05-xhs-craft.png)
 
 - **色彩 Token**：
   ```css

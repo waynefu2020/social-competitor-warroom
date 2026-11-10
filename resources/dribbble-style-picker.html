@@ -26,6 +26,8 @@
 
   /* Preview Window */
   .preview { height: 270px; padding: 22px; display: flex; flex-direction: column; justify-content: space-between; position: relative; overflow: hidden; }
+  .preview-img { width: 100%; aspect-ratio: 16 / 10; object-fit: cover; object-position: top center; display: block; border-bottom: 1px solid var(--border); transition: transform .35s ease; }
+  .style-card:hover .preview-img { transform: scale(1.02); }
 
   /* 1. Editorial */
   .p-editorial { background: #F4F1EA; color: #16140F; font-family: "Noto Sans SC", sans-serif; }
@@ -102,16 +104,7 @@
   <div class="grid">
     <!-- Style 1: Editorial -->
     <div class="style-card selected" onclick="pickStyle('editorial', '① 暖纸社论杂志风 (editorial)', this)">
-      <div class="preview p-editorial">
-        <div>
-          <div class="k"><span>SOCIAL RESEARCH · 小红书</span><span>VOL.01</span></div>
-          <h3>社媒竞品调研报告<br><em>NovaCard 语令卡</em></h3>
-        </div>
-        <div class="row">
-          <div class="b1"><div class="num">¥699</div><div style="font-size:11px;opacity:.9;margin-top:4px">首发价 · 会员无限转写</div></div>
-          <div class="b2"><div style="font-size:10px;opacity:.8">破局打法</div><div style="font-size:12px;font-weight:700;margin-top:4px">百万成熟软件底盘 + 长期记忆</div></div>
-        </div>
-      </div>
+      <img class="preview-img" src="previews/01-editorial.png" alt="① 暖纸社论杂志风 (editorial)">
       <div class="info">
         <div class="info-top"><h2>① 暖纸社论杂志风（默认推荐）</h2><span class="code-tag">editorial</span></div>
         <p class="desc">灵感源自 Kinfolk / Monocle 杂志。米白暖纸底 + 炭黑墨色 + 爱马仕橙 + 橄榄绿破局卡，配思源宋体大标题与衬线巨型数字。</p>
@@ -122,16 +115,7 @@
 
     <!-- Style 2: Bento Dark -->
     <div class="style-card" onclick="pickStyle('bento-dark', '② 暗黑流光便当盒风 (bento-dark)', this)">
-      <div class="preview p-bento">
-        <div>
-          <div class="k"><i></i><span>COMPETITOR WARROOM · AI HARDWARE</span></div>
-          <h3 style="margin-top:8px">上一代录音卡，有 Agent，没记性。</h3>
-        </div>
-        <div class="row">
-          <div class="cell hl"><div style="font-size:10px;color:#818CF8">3-YEAR TCO SAVING</div><div class="num">-70%</div><div style="font-size:11px;color:#9CA3AF">比 Plaud 无限卡省 ¥3,142</div></div>
-          <div class="cell"><div style="font-size:10px;color:#9CA3AF">素人退货死穴</div><div style="font-size:12px;font-weight:700;margin-top:6px;color:#FB7185">半成品软件卖高价硬件</div></div>
-        </div>
-      </div>
+      <img class="preview-img" src="previews/02-bento-dark.png" alt="② 暗黑流光便当盒风 (bento-dark)">
       <div class="info">
         <div class="info-top"><h2>② 暗黑流光便当盒风</h2><span class="code-tag">bento-dark</span></div>
         <p class="desc">灵感源自 Dribbble 科技榜首 Linear / Raycast。深邃曜石黑底 + 1px 微光玻璃边框 + 靛蓝/翠绿霓虹高亮，非对称便当盒模块化卡片。</p>
@@ -142,17 +126,7 @@
 
     <!-- Style 3: McKinsey -->
     <div class="style-card" onclick="pickStyle('mckinsey', '③ 麦肯锡高管作战看板 (mckinsey)', this)">
-      <div class="preview p-mckinsey">
-        <div>
-          <div class="k"><span>EXHIBIT 01 · TCO &amp; POSITIONING</span><span>CONFIDENTIAL</span></div>
-          <h3 style="margin-top:10px">结论：硬件售价趋同，胜负手在于“零订阅税”与“原生长期记忆”</h3>
-        </div>
-        <div class="tbl">
-          <div class="trow us"><span>★ 我方产品 (Plus/Max)</span><span>3年总成本 ¥1,194</span></div>
-          <div class="trow"><span>Plaud Note Pro (无限档)</span><span>3年总成本 ¥4,486</span></div>
-          <div class="trow" style="border:none"><span>出门问问 TicNote (商务版)</span><span>3年总成本 ¥3,344</span></div>
-        </div>
-      </div>
+      <img class="preview-img" src="previews/03-mckinsey.png" alt="③ 麦肯锡高管作战看板 (mckinsey)">
       <div class="info">
         <div class="info-top"><h2>③ 麦肯锡高管作战看板</h2><span class="code-tag">mckinsey</span></div>
         <p class="desc">灵感源自 Pitch / Stripe 商业尽调看板。纯净白灰底 + 深海蓝 + 皇家蓝，严格遵循 Action Title 结论先行与高信噪比表格。</p>
@@ -163,14 +137,7 @@
 
     <!-- Style 4: Swiss -->
     <div class="style-card" onclick="pickStyle('swiss', '④ 瑞士国际主义网格风 (swiss)', this)">
-      <div class="preview p-swiss">
-        <div class="top"><span>ISSUE 01 // WARROOM</span><span>SWISS GRID</span></div>
-        <div class="mid">
-          <div class="big">01</div>
-          <h3>可控的长期记忆：<br>Agent 谁都能接，记忆接不了。</h3>
-        </div>
-        <div class="bot"><span>击穿：得到删不掉标签 · 极米只记2天</span><span style="color:#E3261C">→ 100% 个人私产</span></div>
-      </div>
+      <img class="preview-img" src="previews/04-swiss.png" alt="④ 瑞士国际主义网格风 (swiss)">
       <div class="info">
         <div class="info-top"><h2>④ 瑞士国际主义网格风</h2><span class="code-tag">swiss</span></div>
         <p class="desc">灵感源自 Readymag / Pentagram 先锋设计。2px 建筑感实黑分割线 + 0圆角硬边阴影 + 瑞士高饱和红与巨型几何数字。</p>
@@ -181,14 +148,7 @@
 
     <!-- Style 5: XHS Craft -->
     <div class="style-card" onclick="pickStyle('xhs-craft', '⑤ 小红书原生手账拆解风 (xhs-craft)', this)">
-      <div class="preview p-xhs">
-        <div class="tape"></div>
-        <h3>扒完 10 款竞品差评，真实买家最痛的是<span class="hl">半成品软件</span>与<span class="hl-g">千元订阅税</span>！</h3>
-        <div class="row">
-          <div class="note">❌ 素人避坑 (@乔不湿 154赞)<br>删了录音却删不掉错误标签，发芽砍到每月5次！</div>
-          <div class="sol">✅ 我方破局打法<br>100W成熟软件底盘 + 会员无限转写 0 焦虑</div>
-        </div>
-      </div>
+      <img class="preview-img" src="previews/05-xhs-craft.png" alt="⑤ 小红书原生手账拆解风 (xhs-craft)">
       <div class="info">
         <div class="info-top"><h2>⑤ 小红书原生手账拆解风</h2><span class="code-tag">xhs-craft</span></div>
         <p class="desc">灵感源自小红书万赞干货笔记。米黄方格纸纹理 + 荧光笔半截涂抹高亮 + 和纸胶带与便利贴卡片，亲和力拉满。</p>

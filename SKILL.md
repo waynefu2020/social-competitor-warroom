@@ -118,8 +118,13 @@ description: >-
 | `swiss` | **④ 瑞士国际主义网格风**<br>*(Readymag / Pentagram Brutalist)* | 建筑感 `2px solid #111` 粗黑分割线 + 暖灰底 + 瑞士高饱和红 `#E3261C` + 直角硬朗排版。**适合：设计驱动型品牌、潮流数码、独立开发者** |
 | `xhs-craft` | **⑤ 小红书原生手账拆解风**<br>*(XHS Viral Note Craft)* | 米黄方格纸纹理 `#FFFDF6` + 荧光笔半截涂抹高亮（黄/绿/粉）+ 胶带便利贴卡片。**适合：社媒运营脑暴、生活方式品类、直接截图发小红书干货贴** |
 
-### 风格选择与交付流程（让用户 5 选 1）：
-1. **生成前展示 5 选 1**：在生成最终 HTML 报告前，向用户展示上述 5 种风格（可直接引导用户打开 [resources/dribbble-style-picker.html](resources/dribbble-style-picker.html) 预览画廊，或用 `ask_question` 工具让用户点选 1 种）。
+### 风格选择与交付流程（先展示 5 张风格预览图，让用户 5 选 1）：
+1. **生成前向用户逐一展示 5 张风格预览效果图**：在生成最终 HTML 报告前，**必须在回复中直接嵌入展示 `resources/previews/` 下的 5 张高清风格预览图**（或引导用户打开 [resources/dribbble-style-picker.html](resources/dribbble-style-picker.html) 预览画廊），并配合 `ask_question` 工具让用户从 5 种风格中点选 1 种：
+   - `① 暖纸社论杂志风 (editorial)`：预览图 `resources/previews/01-editorial.png`
+   - `② 暗黑流光便当盒风 (bento-dark)`：预览图 `resources/previews/02-bento-dark.png`
+   - `③ 麦肯锡高管作战看板 (mckinsey)`：预览图 `resources/previews/03-mckinsey.png`
+   - `④ 瑞士国际主义网格风 (swiss)`：预览图 `resources/previews/04-swiss.png`
+   - `⑤ 小红书原生手账拆解风 (xhs-craft)`：预览图 `resources/previews/05-xhs-craft.png`
 2. **纯粹单风格精修输出**：根据用户选定的那 **1 种** 风格，读取 [references/dribbble-5-styles.md](references/dribbble-5-styles.md) 对应的 CSS 设计 Token 与排版细节（若选 `editorial` 直接参照 [resources/editorial-report-reference.html](resources/editorial-report-reference.html)），生成干净、零冗余的单文件 HTML 报告。
 
 ---
