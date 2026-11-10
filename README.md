@@ -38,7 +38,7 @@
 
 ## 🎨 内置 5 套 Dribbble 殿堂级视觉风格（先看预览图，5 选 1 生成）
 
-生成 HTML 报告前，Skill 会直接向你展示以下 **5 张高分辨率风格预览图**（也可双击打开 [`resources/dribbble-style-picker.html`](resources/dribbble-style-picker.html) 实时交互预览），由你**任选 1 种**生成独立单文件 HTML：
+生成 HTML 报告前，Skill 会直接向你展示以下 **5 张高分辨率风格预览图**（以下以大众消费品/新锐美妆个护《FloraRealm 绮境之花》实战拆解为例，也可双击打开 [`resources/dribbble-style-picker.html`](resources/dribbble-style-picker.html) 实时交互预览），由你**任选 1 种**生成独立单文件 HTML：
 
 | 风格代码 | 风格名称 | 视觉基因与排版骨架 | 最适合场景 |
 | :--- | :--- | :--- | :--- |
